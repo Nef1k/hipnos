@@ -1,0 +1,30 @@
+memory_types:
+  text: 0
+  audio: 1
+  video: 2
+
+memories:
+  poiski_sokrovisha:
+    title: "Поиски сокровища"
+    type: text
+    markdown_file: "./markdown/poiski_sokrovisha.md"
+  puteshestvie_vo_vremeni:
+    title: "Путешествие во времени"
+    type: audio
+    markdown_file: "./markdown/puteshestvie_vo_vremeni.md"
+  pobeg_iz_tyurmy:
+    title: "Побег из тюрьмы"
+    type: text
+    markdown_file: "./markdown/pobeg_iz_tyurmy.md"
+  po_sledam_ubiitsy:
+    title: "По следам убийцы"
+    type: audio
+    markdown_file: "./markdown/po_sledam_ubiitsy.md"
+  pokhod_v_gory:
+    title: "Поход в горы"
+    type: video
+    markdown_file: "./markdown/pokhod_v_gory.md"
+  poisk_propavshego_rebenka:
+    title: "Поиск пропавшего ребенка"
+    type: video
+    markdown_file: "./markdown/poisk_propavshego_rebenka.md"

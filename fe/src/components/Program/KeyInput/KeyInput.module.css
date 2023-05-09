@@ -1,0 +1,24 @@
+.keyFormWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.keyFormWrapper input {
+    padding: 5px;
+    font-size: 36pt;
+    width: 320px;
+    text-align: center;
+    border: 2px solid black;
+}
+.keyFormWrapper input:focus {
+    outline: none;
+    border: 2px solid cyan;
+}
+
+.keyFormWrapper button {
+    margin-top: 30px;
+    padding: 10px;
+    width: 150px;
+    font-size: 24pt;
+}

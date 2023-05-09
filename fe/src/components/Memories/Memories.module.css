@@ -1,0 +1,42 @@
+.memoriesWrapper {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.memoriesWrapper h3 {
+    margin-bottom: 0;
+}
+
+.memoriesContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100px);
+    grid-template-rows: repeat(auto-fill, 155px);
+
+    grid-column-gap: 10px;
+    justify-content: space-between;
+
+    overflow-y: scroll;
+    height: 100%;
+    padding: 20px;
+}
+
+.itemWrapper {
+    max-height: 130px;
+
+
+    cursor: pointer;
+}
+.itemWrapper:hover img {
+    background: #eee;
+}
+
+.itemWrapper img {
+    width: 100px;
+    height: 100px;
+}
+
+.itemWrapper p {
+    margin: 0;
+}

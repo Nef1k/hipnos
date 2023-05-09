@@ -1,0 +1,29 @@
+.graphWrapper {
+    display: flex;
+
+    font-size: 24pt;
+}
+
+.srcWordsWrapper {
+    width: 30%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.srcWordsWrapper div {
+    text-align: right;
+
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.linesWrapper {
+    width: 60%;
+}
+.dstWordWrapper {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

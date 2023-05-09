@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Pangolin";
+  src: url('../public/fonts/Pangolin.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: "Pangolin", apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow: hidden;
+}
+
+input, button {
+  font-family: "Pangolin", sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root {
+  height: 100vh;
+}
+

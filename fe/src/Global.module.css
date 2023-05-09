@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+
+}
+
+.w1{ width: 8.33%; }
+.w2{ width: 16.67%; }
+.w3{ width: 25.00%; }
+.w4{ width: 33.33%; }
+.w5{ width: 41.67%; }
+.w6{ width: 50.00%; }
+.w7{ width: 58.33%; }
+.w8{ width: 66.67%; }
+.w9{ width: 75.00%; }
+.w10{ width: 83.33%; }
+.w11{ width: 91.67%; }
+.w12{ width: 100.00%; }
+
+.h1{ height: 8vh; }
+.h2{ height: 17vh; }
+.h3{ height: 25vh; }
+.h4{ height: 33vh; }
+.h5{ height: 42vh; }
+.h6{ height: 50vh; }
+.h7{ height: 58vh; }
+.h8{ height: 67vh; }
+.h9{ height: 75vh; }
+.h10{ height: 83vh; }
+.h11{ height: 92vh; }
+.h12{ height: 100vh; }
+
+.bgRed { background-color: red; }
+.bgGreen { background-color: green; }
+.bgBlue { background-color: blue; }
+.bgMagenta { background-color: magenta; }
+.bgYellow { background-color: yellow; }

@@ -1,0 +1,26 @@
+.itemWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    background-image: url("../../../../public/images/border.png");
+    background-repeat: no-repeat;
+    background-position-x: 10px;
+    background-position-y: 10px;
+}
+
+.activeWrapper {
+    background-image: url("../../../../public/images/border_active.png");
+}
+
+.itemImage {
+    flex-grow: 1;
+
+    width: 100px;
+    height: 100px;
+}
+
+.itemTitle {
+
+}
+

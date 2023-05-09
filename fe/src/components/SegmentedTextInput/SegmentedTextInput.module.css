@@ -1,0 +1,16 @@
+.segmentWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.baseSegment {
+    width: 120px;
+    font-size: 104pt;
+    text-align: center;
+    caret-color: transparent;
+}
+.baseSegment:focus {
+    box-shadow: 0 0 10px darkcyan;
+    border: 1px solid #000;
+    outline: none;
+}
