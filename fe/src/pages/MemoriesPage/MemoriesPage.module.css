@@ -1,0 +1,21 @@
+.memoryWrapper {
+    width: 100%;
+    padding-top: 100px;
+
+    display: flex;
+    justify-content: center;
+
+}
+
+.memoryWrapper div {
+    width: 800px;
+    flex-shrink: 1;
+}
+
+.memoryWrapper div h1 {
+    font-size: 36pt;
+}
+
+.contentWrapper {
+    font-size: 24pt;
+}

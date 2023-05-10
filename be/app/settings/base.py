@@ -63,18 +63,19 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
+    'http://192.168.1.160:3000',
     'http://localhost:8000',
     'http://localhost:3000',
     'http://127.0.0.1:8000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8080',
 ]
-CORS_ALLOW_HEADERS = [
-    *default_headers,
-    'content-disposition'
-]
+# CORS_ALLOW_HEADERS = [
+#     *default_headers,
+#     'content-disposition'
+# ]
 
 ROOT_URLCONF = 'app.urls'
 

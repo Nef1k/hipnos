@@ -1,4 +1,5 @@
 import s from './Memories.module.css';
+import {useEffect} from "react";
 
 const Memories = ({items, onMemoryClick, onBlockedClick}) => {
 
@@ -10,13 +11,15 @@ const Memories = ({items, onMemoryClick, onBlockedClick}) => {
   const lockedImage = '/images/blocked.png';
 
   const getMemoryImage = (memory) => {
-    if (memory.locked) return lockedImage;
-    return memoryTypeImages[memory.type];
+    if (memory.is_locked)
+      return lockedImage;
+
+    return memoryTypeImages[memory.memory_type];
   }
 
   const onClick = (e, idx) => {
     const clickedItem = items[idx];
-    if (onBlockedClick !== null && clickedItem.locked) {
+    if (onBlockedClick !== null && clickedItem.is_locked) {
       onBlockedClick(e, idx, clickedItem);
     } else if (onMemoryClick) {
       onMemoryClick(e, idx, clickedItem);

@@ -1,3 +1,5 @@
+import markdown
+
 from di.services.base import BaseService
 from di.services.files import FilesService
 
@@ -9,8 +11,9 @@ class MarkdownService(BaseService):
     ):
         self.files_service = files_service
 
-    def markdown_to_html(self, markdown: str) -> str:
-        return 'Markdown rendering is not implemented yet'
+    def markdown_to_html(self, markdown_body: str) -> str:
+        # return 'Markdown rendering is not implemented yet'
+        return markdown.markdown(markdown_body)
 
     def markdown_file_to_html(self, file_path: str) -> str:
         markdown = self.files_service.read_text_file(file_path)
