@@ -54,6 +54,7 @@ class Container(containers.DeclarativeContainer):
     reset_service: ResetService = providers.Factory(
         ResetService,
         memory_service,
+        __name__
     )
 
 

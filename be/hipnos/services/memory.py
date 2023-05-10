@@ -1,7 +1,7 @@
 import os.path
 from typing import List
 
-from di.services.base import BaseService
+from di.services.base import BaseSubsystem
 from di.services.files import FilesService
 from di.services.markdown import MarkdownService
 from game_data.services.gd_path import GDPathService
@@ -9,7 +9,7 @@ from hipnos.models import Memory
 from hipnos.models import MemoryType
 
 
-class MemoryService(BaseService):
+class MemoryService(BaseSubsystem):
     def __init__(
             self,
             gd_path_service: GDPathService,
@@ -50,20 +50,19 @@ class MemoryService(BaseService):
         Memory.objects.all().delete()
         MemoryType.objects.all().delete()
 
-    def reset(self):
+    def initialize(self):
         raw_memories = self.gd_path_service.read_config('init_data.memories.index')
         memory_index = raw_memories['memories']
         memory_types = raw_memories['memory_types']
 
-        self.prune()
-        self._reset_memory_types(memory_types)
-        self._reset_memories(memory_index, memory_types)
+        self._initialize_memory_types(memory_types)
+        self._initialize_memories(memory_index, memory_types)
 
-    def _reset_memory_types(self, new_memory_types):
+    def _initialize_memory_types(self, new_memory_types):
         memory_types = self._prepare_memory_types(new_memory_types)
         MemoryType.objects.bulk_create(memory_types)
 
-    def _reset_memories(self, memory_index, memory_types):
+    def _initialize_memories(self, memory_index, memory_types):
         initial_memories = self._load_initial_memories(memory_index, memory_types)
         Memory.objects.bulk_create(initial_memories)
 
