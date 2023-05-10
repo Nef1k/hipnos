@@ -36,7 +36,7 @@ class HealthcheckView(APIView):
 
 swagger_schema_view = get_schema_view(
     openapi.Info(
-        title='Sklad API',
+        title='HIPNOS API',
         default_version='v1',
     ),
     public=True,

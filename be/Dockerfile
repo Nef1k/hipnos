@@ -24,9 +24,9 @@ FROM base AS runtime
 COPY --from=python-deps /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
 
-RUN useradd --create-home sklad
-WORKDIR /home/sklad
-USER sklad
+RUN useradd --create-home hipnos
+WORKDIR /home/hipnos
+USER hipnos
 
 COPY . .
 
