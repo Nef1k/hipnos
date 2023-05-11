@@ -47,6 +47,8 @@ class HipnosPhrase(models.Model):
     synonym = models.ForeignKey('HipnosPhrase', null=True, on_delete=models.CASCADE)
     program = models.ForeignKey('HipnosProgram', null=True, on_delete=models.DO_NOTHING)
 
+    order_key = models.IntegerField(null=True)
+
     def __str__(self):
         return f'<{type(self).__name__} {self.name} ("{self.phrase}")>'
 
@@ -62,6 +64,8 @@ class HipnosProgram(models.Model, NamedModelMixin):
 
     state = models.ForeignKey(HProgramState, on_delete=models.DO_NOTHING)
     target_phrase = models.ForeignKey(HipnosPhrase, on_delete=models.DO_NOTHING)
+
+    order_key = models.IntegerField(null=False)
 
     class Meta:
         db_table = 'hipnos_program'

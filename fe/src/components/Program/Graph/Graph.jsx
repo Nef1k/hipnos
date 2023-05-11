@@ -23,7 +23,7 @@ const Graph = ({currentProgram}) => {
         wordHeights,
         0.1,
         0.4,
-        0,
+        0.35,
         15,
         5,
         20
@@ -52,13 +52,20 @@ const Graph = ({currentProgram}) => {
   }
 
   const pathToSVG = (path) => {
-    return (
+    const curve = (
       `M ${path.startPoint.x} ${path.startPoint.y} ` +
       `L ${path.curve.p1.x} ${path.curve.p1.y} ` +
       `C ${path.curve.p2.x},${path.curve.p2.y} ` +
       `${path.curve.p3.x},${path.curve.p3.y} ` +
       `${path.curve.p4.x},${path.curve.p4.y}`
     );
+    const straightPath = (
+      `M ${path.startPoint.x} ${path.startPoint.y} ` +
+      `L ${path.curve.p4.x} ${path.curve.p4.y} `
+      // `L ${path.curve.p3.x} ${path.curve.p3.y} ` +
+      // `L ${path.curve.p4.x} ${path.curve.p4.y} `
+    );
+    return straightPath;
   }
 
   const getNthCenter = (n, sizes) => {

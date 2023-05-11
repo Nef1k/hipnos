@@ -1,4 +1,5 @@
 phrases:
+  # Morpheus
   space:
     phrase: "Космос"
     synonyms:
@@ -41,3 +42,33 @@ phrases:
         phrase: event_horizon
       check_program_finished:
         program: morpheus
+
+
+  # Phantas
+  colonization:
+    phrase: "Колонизация"
+    actions:
+      unlock_phrase:
+        phrase: colonization
+      unlock_memory:
+        memory: pokhod_v_gory
+      finish_program:
+        program: phantas
+  citizen:
+    phrase: "Поселенец"
+    synonyms:
+      - "Горожанин"
+      - "Житель"
+    actions:
+      unlock_phrase:
+        phrase: citizen
+  development:
+    phrase: "Освоение"
+    actions:
+      unlock_phrase:
+        phrase: development
+  take_over:
+    phrase: "Захват"
+    actions:
+      unlock_phrase:
+        phrase: take_over

@@ -59,14 +59,15 @@ class ProgramSubsystem(BaseSubsystem):
 
         synonym_phrases = []
         for core_phrase_name, core_phrase in phrases.items():
-            for sidx, synonym_phrase in enumerate(core_phrase['synonyms']):
+            for sidx, synonym_phrase in enumerate(core_phrase.get('synonyms', [])):
                 synonym_phrases.append(HipnosPhrase(
                     name=f'syn_for_{core_phrase_name}_{sidx}',
                     phrase=synonym_phrase,
                     synonym=core_phrases[core_phrase_name],
                     program=None,  # should not be populated
                 ))
-        HipnosPhrase.objects.bulk_create(synonym_phrases)
+        if synonym_phrases:
+            HipnosPhrase.objects.bulk_create(synonym_phrases)
 
         return {
             phrase.name: phrase
@@ -82,18 +83,21 @@ class ProgramSubsystem(BaseSubsystem):
         programs = programs['programs']
 
         program_instances = []
-        for program_name, program in programs.items():
+        for idx, (program_name, program) in enumerate(programs.items()):
             program_instance = HipnosProgram(
                 name=program_name,
                 title=program['title'],
                 code_part=program['code_part'],
                 target_phrase=initialized_phrases[program['target_phrase']],
-                state=initialized_states[0]
+                state=initialized_states[0],
+                order_key=idx,
             )
-            for src_phrase in program['src_phrases']:
+            for pidx, src_phrase in enumerate(program['src_phrases']):
                 initialized_phrases[src_phrase].program = program_instance
+                initialized_phrases[src_phrase].order_key = pidx
             program_instances.append(program_instance)
+        program_instances[0].state = initialized_states[1]
         HipnosProgram.objects.bulk_create(program_instances)
-        HipnosPhrase.objects.bulk_update(initialized_phrases.values(), ['program'])
+        HipnosPhrase.objects.bulk_update(initialized_phrases.values(), ['program', 'order_key'])
 
         return programs

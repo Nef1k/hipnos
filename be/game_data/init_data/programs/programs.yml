@@ -7,3 +7,12 @@ programs:
       - emptiness
       - big_bang
       - event_horizon
+
+  phantas:
+    title: "Фантас"
+    target_phrase: colonization
+    code_part: 34
+    src_phrases:
+      - citizen
+      - development
+      - take_over
