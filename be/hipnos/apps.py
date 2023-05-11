@@ -11,5 +11,6 @@ class HipnosConfig(AppConfig):
         from . import views
         from di.containers import container
         container.wire(modules=[
-            'hipnos.management.commands.base.serviced_hipnos_command'
+            'hipnos.management.commands.base.serviced_hipnos_command',
+            'hipnos.views.programs',
         ])

@@ -67,5 +67,9 @@ class HipnosProgram(models.Model, NamedModelMixin):
 
     order_key = models.IntegerField(null=False)
 
+    @property
+    def unlocked_at(self):
+        return self.target_phrase.unlocked_at
+
     class Meta:
         db_table = 'hipnos_program'

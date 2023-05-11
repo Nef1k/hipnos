@@ -19,7 +19,7 @@ const Graph = ({currentProgram}) => {
       boxSize: boxSize,
       paths: getPaths(
         boxSize,
-        currentProgram.sourceWords.length,
+        currentProgram?.src_phrases.length,
         wordHeights,
         0.1,
         0.4,
@@ -52,20 +52,10 @@ const Graph = ({currentProgram}) => {
   }
 
   const pathToSVG = (path) => {
-    const curve = (
-      `M ${path.startPoint.x} ${path.startPoint.y} ` +
-      `L ${path.curve.p1.x} ${path.curve.p1.y} ` +
-      `C ${path.curve.p2.x},${path.curve.p2.y} ` +
-      `${path.curve.p3.x},${path.curve.p3.y} ` +
-      `${path.curve.p4.x},${path.curve.p4.y}`
-    );
-    const straightPath = (
+    return (
       `M ${path.startPoint.x} ${path.startPoint.y} ` +
       `L ${path.curve.p4.x} ${path.curve.p4.y} `
-      // `L ${path.curve.p3.x} ${path.curve.p3.y} ` +
-      // `L ${path.curve.p4.x} ${path.curve.p4.y} `
     );
-    return straightPath;
   }
 
   const getNthCenter = (n, sizes) => {
@@ -126,7 +116,7 @@ const Graph = ({currentProgram}) => {
   return (
     <div className={s.graphWrapper}>
       <div ref={wordsWrapperRef} className={s.srcWordsWrapper}>
-        {currentProgram.sourceWords.map((word, idx) => {
+        {currentProgram?.src_phrases.map((word, idx) => {
           return (
             <div ref={idx === 0 ? srcWordRef : null} key={idx}>{word || "? ? ?"}</div>
           );
@@ -143,7 +133,7 @@ const Graph = ({currentProgram}) => {
           })}
         </svg>
       </div>
-      <div className={s.dstWordWrapper}>{currentProgram.dstWord || "? ? ?"}</div>
+      <div className={s.dstWordWrapper}>{currentProgram?.target_phrase || "? ? ?"}</div>
     </div>
   )
 }

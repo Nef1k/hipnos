@@ -101,3 +101,6 @@ class ProgramSubsystem(BaseSubsystem):
         HipnosPhrase.objects.bulk_update(initialized_phrases.values(), ['program', 'order_key'])
 
         return programs
+
+    def submit_phrase(self, phrase: str):
+        print(f'Phrase submitted: {phrase}')

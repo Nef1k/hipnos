@@ -1,6 +1,6 @@
 import s from './ItemsSelector.module.css';
 import SelectorItem from "./SelectorItem/SelectorItem";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const ItemsSelector = ({items, initialActiveIdx, onActiveChange}) => {
   const stateImageUrls = {
@@ -43,9 +43,9 @@ const ItemsSelector = ({items, initialActiveIdx, onActiveChange}) => {
 }
 
 export const ItemState = {
-  InProgress: 0,
-  Finished: 1,
-  Locked: 2
+  Locked: 0,
+  InProgress: 1,
+  Finished: 2,
 }
 
 export default ItemsSelector;

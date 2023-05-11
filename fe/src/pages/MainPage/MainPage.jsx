@@ -9,41 +9,8 @@ import Program from "../../components/Program/Program";
 import {axiosInstance} from "../../api/axios";
 
 const MainPage = () => {
-  const initialPrograms = [
-    {
-      id: 1,
-      title: "Морфей",
-      state: ItemState.Finished,
-      dstWord: "Космос",
-      sourceWords: [
-        "Пустота",
-        "Большой Взрыв",
-        "Горизонт Событий",
-      ]
-    },
-    {
-      id: 2,
-      title: "Фантас",
-      state: ItemState.InProgress,
-      dstWord: null,
-      sourceWords: [
-        "dlkasdf",
-        null,
-        "fwqe3r5",
-        "t1gf354"
-      ],
-    },
-    {
-      id: 3,
-      title: "Фобетор",
-      state: ItemState.Locked,
-      dstWord: null,
-      sourceWords: [],
-    }
-  ];
-
   const [memories, setMemories] = useState([]);
-  const [programItems, setProgramItems] = useState(initialPrograms);
+  const [programItems, setProgramItems] = useState([]);
   const [activeProgramIdx, setActiveProgramIdx] = useState(0);
 
   const navigate = useNavigate();
@@ -51,24 +18,56 @@ const MainPage = () => {
   const onMemoryClick = (e, idx, memory) => {
     navigate(`/memories/${memory.id}`);
   }
-  const onBlockedMemoryClick = (e, idx, memory) => {}
+  const onBlockedMemoryClick = (e, idx, memory) => {
+  }
+
+  const handlePhraseSubmit = (phrase) => {
+    submitPhrase(phrase)
+      .catch((e) => {console.log(e)})
+  }
+
+  async function fetchMemories() {
+    const result = await axiosInstance.get('/hipnos/memories/');
+    const memories = result.data;
+    setMemories(memories);
+  }
+
+  async function fetchPrograms() {
+    const result = await axiosInstance.get('/hipnos/programs/');
+    const programs = result.data;
+    setProgramItems(programs);
+  }
+
+  async function submitPhrase(phrase) {
+    const result = await axiosInstance.post('/hipnos/programs/phrase/', {
+      phrase: phrase
+    });
+
+    if (result.status !== 200) {
+      throw new Error(`Error while submitting pharse ${phrase}`);
+    }
+  }
+
+  function beginFetchingData() {
+    fetchMemories()
+      .catch((e) => {
+        console.error(e);
+      });
+    fetchPrograms()
+      .catch((e) => {
+        console.error(e);
+      });
+  }
 
   useEffect(() => {
-    async function fetchMemories() {
-      const result = await axiosInstance.get('/hipnos/memories/');
-      const memories = result.data;
-      setMemories(memories);
-    }
-
-    fetchMemories()
-      .catch((e) => {console.error(e);});
+    beginFetchingData();
   }, []);
 
   return (
     <div className={gs.grid}>
       <div className={`${gs.row} ${gs.h7} ${s.firstRow}`}>
         <div className={`${gs.cell} ${gs.w10} ${s.hipnosCodeWrapper}`}>
-          <HipnosCode />
+          <HipnosCode/>
         </div>
         <div className={`${gs.cell} ${gs.w2}`}>
           <ItemsSelector
@@ -88,6 +87,7 @@ const MainPage = () => {
         <div className={`${gs.cell} ${gs.w7}`}>
           <Program
             currentProgram={programItems[activeProgramIdx]}
+            onPhraseSubmit={handlePhraseSubmit}
           />
         </div>
       </div>
