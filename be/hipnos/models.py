@@ -1,7 +1,9 @@
 from django.db import models
 
+from di.utils.entitled_model import NamedModelMixin
 
-class MemoryType(models.Model):
+
+class MemoryType(models.Model, NamedModelMixin):
     TEXT = 0
     AUDIO = 1
     VIDEO = 2
@@ -12,7 +14,7 @@ class MemoryType(models.Model):
         db_table = 'hipnos_memory_type'
 
 
-class Memory(models.Model):
+class Memory(models.Model, NamedModelMixin):
     name = models.CharField(max_length=255, null=False, unique=True)
     title = models.CharField(max_length=255, null=False, default='')
     unlocked_at = models.DateTimeField(null=True)
@@ -25,7 +27,7 @@ class Memory(models.Model):
     memory_type = models.ForeignKey(MemoryType, on_delete=models.DO_NOTHING)
 
 
-class HProgramState(models.Model):
+class HProgramState(models.Model, NamedModelMixin):
     LOCKED = 0
     IN_PROGRESS = 1
     FINISHED = 2
@@ -42,14 +44,17 @@ class HipnosPhrase(models.Model):
     phrase = models.CharField(max_length=255, null=False, unique=True)
     unlocked_at = models.DateTimeField(null=True)
 
-    synonym = models.ForeignKey('HipnosPhrase', on_delete=models.CASCADE)
+    synonym = models.ForeignKey('HipnosPhrase', null=True, on_delete=models.CASCADE)
     program = models.ForeignKey('HipnosProgram', null=True, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return f'<{type(self).__name__} {self.name} ("{self.phrase}")>'
 
     class Meta:
         db_table = 'hipnos_phrase'
 
 
-class HipnosProgram(models.Model):
+class HipnosProgram(models.Model, NamedModelMixin):
     name = models.CharField(max_length=255, null=False)
     title = models.CharField(max_length=255, null=True, default='')
 

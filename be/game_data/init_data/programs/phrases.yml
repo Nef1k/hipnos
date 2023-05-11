@@ -1,0 +1,43 @@
+phrases:
+  space:
+    phrase: "Космос"
+    synonyms:
+      - "Чернота"
+      - "Space"
+    actions:
+      unlock_phrase:
+        phrase: space
+      unlock_memory:
+        memory: pobeg_iz_tyurmy
+      boom:
+        id: boom1
+      finish_program:
+        program: morpheus
+  emptiness:
+    phrase: "Пустота"
+    synonyms:
+      - "Ничего"
+      - "Ничто"
+    actions:
+      unlock_phrase:
+        phrase: emptiness
+      check_program_finished:
+        program: morpheus
+  big_bang:
+    phrase: "Большой Взрыв"
+    synonyms:
+      - "Взрыв"
+    actions:
+      unlock_phrase:
+        phrase: big_bang
+      check_program_finished:
+        program: morpheus
+  event_horizon:
+    phrase: "Горизонт Событий"
+    synonyms:
+      - "Горизонт"
+    actions:
+      unlock_phrase:
+        phrase: event_horizon
+      check_program_finished:
+        program: morpheus

@@ -8,6 +8,7 @@ from di.services.tmp_storage_service import TmpStorageService
 from di.services.yaml import YamlService
 from game_data.services.gd_path import GDPathService
 from hipnos.services.memory import MemoryService
+from hipnos.services.program import ProgramSubsystem
 from hipnos.services.reset import ResetService
 from users.services.user_service import UserService
 
@@ -49,6 +50,11 @@ class Container(containers.DeclarativeContainer):
         gd_path_service,
         files_service,
         markdown_service,
+    )
+
+    program_subsystem: ProgramSubsystem = providers.Factory(
+        ProgramSubsystem,
+        gd_path_service,
     )
 
     reset_service: ResetService = providers.Factory(

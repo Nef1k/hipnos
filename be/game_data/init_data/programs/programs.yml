@@ -1,0 +1,9 @@
+programs:
+  morpheus:
+    title: "Морфей"
+    target_phrase: space
+    code_part: 54
+    src_phrases:
+      - emptiness
+      - big_bang
+      - event_horizon
