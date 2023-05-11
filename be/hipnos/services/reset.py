@@ -4,6 +4,7 @@ from django.db import transaction
 
 from di.services.base import BaseService
 from di.services.base import BaseSubsystem
+from di.services.service_container import ServiceContainerService
 from hipnos.services.memory import MemoryService
 
 
@@ -11,12 +12,10 @@ class ResetService(BaseService):
     def __init__(
             self,
             memory_service: MemoryService,
-            services_container_name
+            sc_service: ServiceContainerService,
     ):
         self.memory_service = memory_service
-
-        container_module = __import__(services_container_name).containers
-        self.services_container_class = container_module.Container
+        self.services_container_class = sc_service.container_class
 
     def reset(self):
         subsystems = self._get_subsystems()

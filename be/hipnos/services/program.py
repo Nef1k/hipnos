@@ -6,14 +6,17 @@ from game_data.services.gd_path import GDPathService
 from hipnos.models import HProgramState
 from hipnos.models import HipnosPhrase
 from hipnos.models import HipnosProgram
+from hipnos.services.actions import ActionSubsystem
 
 
 class ProgramSubsystem(BaseSubsystem):
     def __init__(
             self,
             gd_path_service: GDPathService,
+            action_subsystem: ActionSubsystem,
     ):
         self.gd_path_service = gd_path_service
+        self.action_subsystem = action_subsystem
 
     def initialize(self):
         program_states = self.gd_path_service.read_config('init_data.programs.states')
@@ -103,4 +106,9 @@ class ProgramSubsystem(BaseSubsystem):
         return programs
 
     def submit_phrase(self, phrase: str):
-        print(f'Phrase submitted: {phrase}')
+        self.action_subsystem.execute_action(
+            'test_action',
+            'test_arg1',
+            'test_arg2',
+            test_kwarg=42,
+        )

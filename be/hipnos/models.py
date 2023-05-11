@@ -73,3 +73,16 @@ class HipnosProgram(models.Model, NamedModelMixin):
 
     class Meta:
         db_table = 'hipnos_program'
+
+
+class HipnosAction(models.Model):
+    name = models.CharField(max_length=255, null=False, unique=True)
+
+    action_class_name = models.CharField(max_length=255, null=False)
+    module_name = models.CharField(max_length=255, null=False)
+
+    class Meta:
+        db_table = 'hipnos_actions'
+
+    def __str__(self):
+        return f'<{type(self).__name__} {self.name}>'
