@@ -11,9 +11,7 @@ phrases:
       unlock_memory:
         memory: pobeg_iz_tyurmy
       boom:
-        id: boom1
-      finish_program:
-        program: morpheus
+        boom_id: boom1
   emptiness:
     phrase: "Пустота"
     synonyms:
@@ -22,8 +20,6 @@ phrases:
     actions:
       unlock_phrase:
         phrase: emptiness
-      check_program_finished:
-        program: morpheus
   big_bang:
     phrase: "Большой Взрыв"
     synonyms:
@@ -31,8 +27,6 @@ phrases:
     actions:
       unlock_phrase:
         phrase: big_bang
-      check_program_finished:
-        program: morpheus
   event_horizon:
     phrase: "Горизонт Событий"
     synonyms:
@@ -40,8 +34,6 @@ phrases:
     actions:
       unlock_phrase:
         phrase: event_horizon
-      check_program_finished:
-        program: morpheus
 
 
   # Phantas
@@ -52,8 +44,6 @@ phrases:
         phrase: colonization
       unlock_memory:
         memory: pokhod_v_gory
-      finish_program:
-        program: phantas
   citizen:
     phrase: "Поселенец"
     synonyms:
@@ -72,3 +62,27 @@ phrases:
     actions:
       unlock_phrase:
         phrase: take_over
+
+  # Phobetor
+  sun:
+    phrase: "Солнце"
+    actions:
+      unlock_phrase:
+        phrase: sun
+  star:
+    phrase: "Звезда"
+    actions:
+      unlock_phrase:
+        phrase: star
+  brightness:
+    phrase: "Яркость"
+    actions:
+      unlock_phrase:
+        phrase: brightness
+  helios:
+    phrase: "Гелиос"
+    actions:
+      unlock_phrase:
+        phrase: helios
+      unlock_memory:
+        memory: poisk_propavshego_rebenka

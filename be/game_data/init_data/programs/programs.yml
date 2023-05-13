@@ -1,6 +1,7 @@
 programs:
   morpheus:
     title: "Морфей"
+    next_program: phantas
     target_phrase: space
     code_part: 54
     src_phrases:
@@ -10,9 +11,19 @@ programs:
 
   phantas:
     title: "Фантас"
+    next_program: phobetor
     target_phrase: colonization
     code_part: 34
     src_phrases:
       - citizen
       - development
       - take_over
+
+  phobetor:
+    title: "Фобетор"
+    target_phrase: sun
+    code_part: 29
+    src_phrases:
+      - star
+      - brightness
+      - helios
