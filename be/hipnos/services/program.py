@@ -57,10 +57,11 @@ class ProgramSubsystem(BaseSubsystem):
         return all(src_words_unlocked)
 
     def can_phrase_be_unlocked(self, phrase: HipnosPhrase) -> bool:
-        if not phrase.is_locked:
+        core_phrase = self.get_core_phrase(phrase)
+
+        if not core_phrase.is_locked:
             return False
 
-        core_phrase = self.get_core_phrase(phrase)
         programs_finished_by = HipnosProgram.objects.filter(
             target_phrase=core_phrase)
         is_phrase_target = programs_finished_by.exists()

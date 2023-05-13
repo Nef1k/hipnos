@@ -21,14 +21,14 @@ class PhraseInitializer(BaseInitializer):
 
     def initialize(self):
         phrases_data = self.gd_service.read_config('init_data.programs.phrases')
-        self._initialize_phrases(phrases_data)
+        self._init_phrases(phrases_data)
 
     def prune(self):
         self.subsystem.prune_models([
             HipnosPhrase
         ])
 
-    def _initialize_phrases(self, phrases: dict):
+    def _init_phrases(self, phrases: dict):
         phrases = phrases['phrases']
 
         core_phrases = {
@@ -42,8 +42,7 @@ class PhraseInitializer(BaseInitializer):
         }
         HipnosPhrase.objects.bulk_create(core_phrases.values())
 
-        PhraseAction.objects.bulk_create(
-            self._get_phrase_actions(core_phrases, phrases))
+        self._init_phrase_actions(core_phrases, phrases)
 
         synonym_phrases = []
         for core_phrase_name, core_phrase in phrases.items():
@@ -57,7 +56,7 @@ class PhraseInitializer(BaseInitializer):
         if synonym_phrases:
             HipnosPhrase.objects.bulk_create(synonym_phrases)
 
-    def _get_phrase_actions(
+    def _init_phrase_actions(
             self,
             core_phrase_instances: Dict[str, HipnosPhrase],
             phrases_data: dict,

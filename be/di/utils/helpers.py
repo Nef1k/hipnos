@@ -1,7 +1,7 @@
 def build_args_string(*args, **kwargs):
     args_str = ', '.join((str(arg for arg in args)))
     kwargs_str = ', '.join((
-        f'{str(arg_name)}: {str(arg_value)}'
+        f'{str(arg_name)}={str(arg_value)}'
         for arg_name, arg_value in kwargs.items()
     ))
 

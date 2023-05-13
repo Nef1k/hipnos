@@ -21,7 +21,9 @@ class ResetService(BaseService):
         subsystems = self._get_subsystems()
         with transaction.atomic():
             for subsystem in subsystems:
-                subsystem.reset()
+                subsystem.prune()
+            for subsystem in subsystems:
+                subsystem.initialize()
 
     def prune(self):
         subsystems = self._get_subsystems()

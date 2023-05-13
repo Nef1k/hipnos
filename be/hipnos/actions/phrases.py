@@ -16,5 +16,3 @@ class UnlockPhrase(BaseAction):
 
     def execute(self, phrase: str):
         self.program_service.unlock_phrase(phrase)
-        # print(self.program_service)
-        # print(f'Unlocking phrase {phrase}')
