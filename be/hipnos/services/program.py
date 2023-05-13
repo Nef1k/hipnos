@@ -1,12 +1,17 @@
-from typing import Dict
 from typing import List
+
+from django.db import transaction
+from django.utils.timezone import now
 
 from di.services.base import BaseSubsystem
 from game_data.services.gd_path import GDPathService
 from hipnos.models import HProgramState
 from hipnos.models import HipnosPhrase
 from hipnos.models import HipnosProgram
+from hipnos.models import PhraseAction
 from hipnos.services.actions import ActionSubsystem
+from hipnos.services.initializers.program import ProgramInitializer
+from hipnos.services.phrases import PhraseSubsystem
 
 
 class ProgramSubsystem(BaseSubsystem):
@@ -14,101 +19,88 @@ class ProgramSubsystem(BaseSubsystem):
             self,
             gd_path_service: GDPathService,
             action_subsystem: ActionSubsystem,
+            phrases_subsystem: PhraseSubsystem,
     ):
         self.gd_path_service = gd_path_service
         self.action_subsystem = action_subsystem
-
-    def initialize(self):
-        program_states = self.gd_path_service.read_config('init_data.programs.states')
-        phrases = self.gd_path_service.read_config('init_data.programs.phrases')
-        programs = self.gd_path_service.read_config('init_data.programs.programs')
-
-        initialized_states = self._init_states(program_states)
-        initialized_phrases = self._init_phrases(phrases)
-        self._init_programs(programs, initialized_states, initialized_phrases)
-
-    def prune(self):
-        HipnosPhrase.objects.filter(synonym__isnull=False).delete()
-        HipnosPhrase.objects.filter(program__isnull=False).delete()
-        self.prune_models([
-            HipnosProgram,
-            HipnosPhrase,
-            HProgramState,
-        ])
-
-    @staticmethod
-    def _init_states(program_states: dict) -> List[HProgramState]:
-        states = program_states['program_states']
-        states = [
-            HProgramState(id=state_id, name=state_name)
-            for state_name, state_id in states.items()]
-        HProgramState.objects.bulk_create(states)
-        return states
-
-    @staticmethod
-    def _init_phrases(phrases: dict) -> Dict[str, HipnosPhrase]:
-        phrases = phrases['phrases']
-
-        core_phrases = {
-            phrase_name: HipnosPhrase(
-                name=phrase_name,
-                phrase=phrase['phrase'],
-                synonym=None,  # this is a core phrase not a synonym
-                program=None,  # this will be populated later on
-            )
-            for phrase_name, phrase in phrases.items()
-        }
-        HipnosPhrase.objects.bulk_create(core_phrases.values())
-
-        synonym_phrases = []
-        for core_phrase_name, core_phrase in phrases.items():
-            for sidx, synonym_phrase in enumerate(core_phrase.get('synonyms', [])):
-                synonym_phrases.append(HipnosPhrase(
-                    name=f'syn_for_{core_phrase_name}_{sidx}',
-                    phrase=synonym_phrase,
-                    synonym=core_phrases[core_phrase_name],
-                    program=None,  # should not be populated
-                ))
-        if synonym_phrases:
-            HipnosPhrase.objects.bulk_create(synonym_phrases)
-
-        return {
-            phrase.name: phrase
-            for phrase in [*core_phrases.values(), *synonym_phrases]
-        }
-
-    @staticmethod
-    def _init_programs(
-            programs: dict,
-            initialized_states: List[HProgramState],
-            initialized_phrases: Dict[str, HipnosPhrase],
-    ) -> List[HipnosProgram]:
-        programs = programs['programs']
-
-        program_instances = []
-        for idx, (program_name, program) in enumerate(programs.items()):
-            program_instance = HipnosProgram(
-                name=program_name,
-                title=program['title'],
-                code_part=program['code_part'],
-                target_phrase=initialized_phrases[program['target_phrase']],
-                state=initialized_states[0],
-                order_key=idx,
-            )
-            for pidx, src_phrase in enumerate(program['src_phrases']):
-                initialized_phrases[src_phrase].program = program_instance
-                initialized_phrases[src_phrase].order_key = pidx
-            program_instances.append(program_instance)
-        program_instances[0].state = initialized_states[1]
-        HipnosProgram.objects.bulk_create(program_instances)
-        HipnosPhrase.objects.bulk_update(initialized_phrases.values(), ['program', 'order_key'])
-
-        return programs
-
-    def submit_phrase(self, phrase: str):
-        self.action_subsystem.execute_action(
-            'test_action',
-            'test_arg1',
-            'test_arg2',
-            test_kwarg=42,
+        self.phrases_subsystem = phrases_subsystem
+        self.initializer = ProgramInitializer(
+            gd_service=gd_path_service,
+            phrase_subsystem=phrases_subsystem,
+            action_subsystem=action_subsystem,
+            subsystem=self,
         )
+
+    def get_phrase(self, phrase_str: str) -> HipnosPhrase:
+        return HipnosPhrase.objects.get(phrase__iexact=phrase_str)
+
+    def get_phrase_by_name(self, phrase_name: str) -> HipnosPhrase:
+        return HipnosPhrase.objects.get(name=phrase_name)
+
+    def get_core_phrase(self, phrase: HipnosPhrase) -> HipnosPhrase:
+        if phrase.synonym_id is None:
+            return phrase
+
+        return phrase.synonym
+
+    def get_phrase_actions(self, phrase: HipnosPhrase) -> List[PhraseAction]:
+        actions = list(PhraseAction.objects.filter(phrase=phrase))
+
+        if phrase.synonym is not None:
+            actions.extend(
+                PhraseAction.objects.filter(phrase=self.get_core_phrase(phrase)))
+
+        return actions
+
+    def can_program_be_finished(self, program: HipnosProgram) -> bool:
+        src_words_unlocked = program.hipnosphrase_set.values_list('unlocked_at', flat=True)
+        return all(src_words_unlocked)
+
+    def can_phrase_be_unlocked(self, phrase: HipnosPhrase) -> bool:
+        if not phrase.is_locked:
+            return False
+
+        core_phrase = self.get_core_phrase(phrase)
+        programs_finished_by = HipnosProgram.objects.filter(
+            target_phrase=core_phrase)
+        is_phrase_target = programs_finished_by.exists()
+        can_programs_be_finished = all(
+            self.can_program_be_finished(program)
+            for program in programs_finished_by
+        )
+        if is_phrase_target and not can_programs_be_finished:
+            return False
+
+        return True
+
+    def submit_phrase(self, phrase_str: str):
+        phrase = self.get_phrase(phrase_str)
+
+        if not self.can_phrase_be_unlocked(phrase):
+            return None
+
+        actions = self.get_phrase_actions(phrase)
+        for phrase_action in actions:
+            self.action_subsystem.execute_action_by_info(phrase_action)
+
+    def unlock_phrase(self, phrase_str: str):
+        phrase = self.get_phrase_by_name(phrase_str)
+        core_phrase = self.get_core_phrase(phrase)
+
+        phrase.unlocked_at = now()
+        core_phrase.unlocked_at = now()
+
+        with transaction.atomic():
+            if phrase != core_phrase:
+                phrase.save()
+            core_phrase.save()
+
+    def get_program_by_name(self, program_name: str) -> HipnosProgram:
+        return HipnosProgram.objects.get(name=program_name)
+
+    def get_current_program(self) -> HipnosProgram:
+        return HipnosProgram.objects.get(state_id=HProgramState.IN_PROGRESS)
+
+    def set_program_state(self, program: HipnosProgram, state_id: int):
+        program.state_id = state_id
+        program.save()

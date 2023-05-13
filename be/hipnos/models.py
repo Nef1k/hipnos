@@ -1,6 +1,7 @@
 from django.db import models
 
 from di.utils.entitled_model import NamedModelMixin
+from di.utils.managers import OrderedManager
 
 
 class MemoryType(models.Model, NamedModelMixin):
@@ -49,6 +50,10 @@ class HipnosPhrase(models.Model):
 
     order_key = models.IntegerField(null=True)
 
+    @property
+    def is_locked(self):
+        return self.unlocked_at is None
+
     def __str__(self):
         return f'<{type(self).__name__} {self.name} ("{self.phrase}")>'
 
@@ -63,7 +68,7 @@ class HipnosProgram(models.Model, NamedModelMixin):
     code_part = models.CharField(max_length=2, null=False)
 
     state = models.ForeignKey(HProgramState, on_delete=models.DO_NOTHING)
-    target_phrase = models.ForeignKey(HipnosPhrase, on_delete=models.DO_NOTHING)
+    target_phrase = models.ForeignKey(HipnosPhrase, null=True, on_delete=models.SET_NULL)
 
     order_key = models.IntegerField(null=False)
 
@@ -86,3 +91,16 @@ class HipnosAction(models.Model):
 
     def __str__(self):
         return f'<{type(self).__name__} {self.name}>'
+
+
+class PhraseAction(models.Model):
+    order_key = models.IntegerField(null=True)
+
+    phrase = models.ForeignKey(HipnosPhrase, on_delete=models.CASCADE)
+    action = models.ForeignKey(HipnosAction, on_delete=models.CASCADE)
+
+    args = models.JSONField(null=False)
+    kwargs = models.JSONField(null=False)
+
+    class Meta:
+        db_table = 'hipnos_phrase_action'

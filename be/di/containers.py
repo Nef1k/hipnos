@@ -10,6 +10,7 @@ from di.services.yaml import YamlService
 from game_data.services.gd_path import GDPathService
 from hipnos.services.actions import ActionSubsystem
 from hipnos.services.memory import MemoryService
+from hipnos.services.phrases import PhraseSubsystem
 from hipnos.services.program import ProgramSubsystem
 from hipnos.services.reset import ResetService
 from users.services.user_service import UserService
@@ -65,10 +66,17 @@ class Container(containers.DeclarativeContainer):
         sc_service,
     )
 
+    phrase_subsystem: PhraseSubsystem = providers.Factory(
+        PhraseSubsystem,
+        gd_path_service,
+        actions_subsystem,
+    )
+
     program_subsystem: ProgramSubsystem = providers.Factory(
         ProgramSubsystem,
         gd_path_service,
         actions_subsystem,
+        phrase_subsystem,
     )
 
     reset_service: ResetService = providers.Factory(

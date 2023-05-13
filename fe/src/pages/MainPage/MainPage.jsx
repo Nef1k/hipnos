@@ -43,12 +43,14 @@ const MainPage = () => {
       phrase: phrase
     });
 
-    if (result.status !== 200) {
+    if (result.status === 200) {
+      refreshData();
+    } else {
       throw new Error(`Error while submitting pharse ${phrase}`);
     }
   }
 
-  function beginFetchingData() {
+  function refreshData() {
     fetchMemories()
       .catch((e) => {
         console.error(e);
@@ -57,6 +59,10 @@ const MainPage = () => {
       .catch((e) => {
         console.error(e);
       });
+  }
+
+  function beginFetchingData() {
+    refreshData();
   }
 
   useEffect(() => {
