@@ -1,3 +1,4 @@
+from app.helpers import get_constants_from_class
 from di.services.base import BaseInitializer
 from di.services.base import BaseSubsystem
 from game_data.services.gd_path import GDPathService
@@ -14,11 +15,11 @@ class NotificationInitializer(BaseInitializer):
         self.subsystem = subsystem
 
     def initialize(self):
-        channels_data = self.gd_service.read_config('init_data.notifications.channels')
+        channel_names = get_constants_from_class(NotificationChannel, str)
 
         NotificationChannel.objects.bulk_create(NotificationChannel(
             name=channel_name
-        ) for channel_name in channels_data['channels'])
+        ) for channel_name in channel_names.values())
 
     def prune(self):
         self.subsystem.prune_models([NotificationChannel])

@@ -1,5 +1,8 @@
 import random
+from typing import Any
 from typing import Dict
+from typing import List
+from typing import TypeVar
 
 
 def build_args_string(*args, **kwargs):
@@ -42,3 +45,13 @@ def split_query_string(query_string: str) -> Dict[str, str]:
         result[param_name] = param_value
 
     return result
+
+
+T = TypeVar('T')
+
+
+def dict_from_list(instances: List[T], key_field: str = 'name') -> Dict[str, T]:
+    return {
+        getattr(instance, key_field): instance
+        for instance in instances
+    }

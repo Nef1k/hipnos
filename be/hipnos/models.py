@@ -1,7 +1,9 @@
+from typing import Any
+
 from django.db import models
 
 from di.utils.entitled_model import NamedModelMixin
-from di.utils.managers import OrderedManager
+from notifications.models import NotificationChannel
 
 
 class MemoryType(models.Model, NamedModelMixin):
@@ -55,7 +57,7 @@ class HipnosPhrase(models.Model):
         return self.unlocked_at is None
 
     def __str__(self):
-        return f'<{type(self).__name__} {self.name} ("{self.phrase}")>'
+        return f'{self.name} ("{self.phrase}")'
 
     class Meta:
         db_table = 'hipnos_phrase'
@@ -90,7 +92,7 @@ class HipnosAction(models.Model):
         db_table = 'hipnos_actions'
 
     def __str__(self):
-        return f'<{type(self).__name__} {self.name}>'
+        return f'{self.name}'
 
 
 class PhraseAction(models.Model):
@@ -104,3 +106,66 @@ class PhraseAction(models.Model):
 
     class Meta:
         db_table = 'hipnos_phrase_action'
+
+
+class HEventType(models.Model):
+    PHRASE_ACTION_TRIGGERED = 0, (NotificationChannel.ACTIONS,)
+    MEMORY_UNLOCKED = 1, (NotificationChannel.MEMORIES,)
+    PHRASE_UNLOCKED = 2, (NotificationChannel.PHRASES,)
+    PROGRAM_NEXT = 3, (NotificationChannel.PROGRAMS,)
+    PROGRAM_SET_STATE = 4, (NotificationChannel.PROGRAMS,)
+    SUBSCRIBER_CONNECTED = 5, (NotificationChannel.NOTIFICATIONS,)
+    SUBSCRIBER_DISCONNECTED = 6, (NotificationChannel.NOTIFICATIONS,)
+    TEST_EVENT = 1000, (NotificationChannel.MEMORIES,
+                        NotificationChannel.ACTIONS,
+                        NotificationChannel.PHRASES)
+
+    name = models.CharField(max_length=255, null=False, unique=True)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        db_table = 'hipnos_event_type'
+
+
+class EventNotification(models.Model):
+    event_type = models.ForeignKey(HEventType, on_delete=models.CASCADE)
+    channel = models.ForeignKey('notifications.NotificationChannel',
+                                on_delete=models.CASCADE)
+
+    order_key = models.IntegerField(null=False)
+
+    def __str__(self):
+        return f'event: {self.event_type.name}; channel: {self.channel.name}'
+
+    class Meta:
+        db_table = 'hipnos_event_notification'
+
+
+class HipnosEvent(models.Model):
+    timestamp = models.DateTimeField(null=False, auto_now=True)
+    event_type = models.ForeignKey(HEventType, on_delete=models.DO_NOTHING)
+    source = models.CharField(max_length=255, null=False, default='unknown')
+
+    previous_state = models.JSONField(null=True)
+    current_state = models.JSONField(null=True)
+
+    misc_data = models.JSONField(null=True)
+
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'timestamp': str(self.timestamp),
+            'type': self.event_type_id,
+            'source': self.source,
+            'prev_state': self.previous_state,
+            'current_state': self.current_state,
+            'misc_data': self.misc_data,
+        }
+
+    def __str__(self):
+        return f'{self.event_type.name}'
+
+    class Meta:
+        db_table = 'hipnos_event'

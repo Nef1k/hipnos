@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import Any
 from typing import Iterable
 from typing import List
@@ -64,7 +63,7 @@ class NotificationSubsystem(BaseSubsystem):
             channels: Iterable[Union[NotificationChannel, str]]
     ) -> List[NotificationChannel]:
         channels_to_fetch = list(filter(
-            lambda channel: isinstance(channels, str),
+            lambda channel: isinstance(channel, str),
             channels
         ))
         if not channels_to_fetch:
@@ -79,6 +78,6 @@ class NotificationSubsystem(BaseSubsystem):
         return list(map(
             lambda channel:
                 channel_instances[channel]
-                if isinstance(channels, str)
+                if isinstance(channel, str)
                 else channel,
             channels))

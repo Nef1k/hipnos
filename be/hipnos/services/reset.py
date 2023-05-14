@@ -43,8 +43,8 @@ class ResetService(BaseService):
 
     def _get_subsystem_providers(self) -> list:
         subsystems = []
-        for item in dir(self.services_container_class):
-            provider = getattr(self.services_container_class, item)
+        for member_name, member in self.services_container_class.__dict__.items():
+            provider = member
             if 'cls' not in dir(provider):
                 continue
             cls = provider.cls

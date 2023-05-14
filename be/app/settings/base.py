@@ -140,6 +140,9 @@ SIMPLE_JWT = {
     'TMP_TOKEN_LIFETIME': timedelta(minutes=60),
 
     'AUTH_COOKIE_NAME': 'refresh_token',
+
+    "USER_ID_FIELD": "username",
+    "USER_ID_CLAIM": "username",
 }
 
 SWAGGER_SETTINGS = {
@@ -166,4 +169,7 @@ CELERY_BROKER = f'amqp://{CELERY_BROKER_USERNAME}' \
 
 
 HIPNOS_GAME_DATA_DIR = PROJECT_DIR / 'game_data'
+HIPNOS_STORAGE_DIR = HIPNOS_GAME_DATA_DIR / 'storage'
+TMP_DIR = HIPNOS_STORAGE_DIR / 'tmp'
 HIPNOS_ACTIONS_ROOT = 'hipnos.actions'
+HIPNOS_EVENTS_BACKUP_DIR = HIPNOS_STORAGE_DIR / 'event_backups'

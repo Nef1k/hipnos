@@ -1,2 +1,8 @@
 c1db/
 !*.example.env
+
+game_data/storage/event_backups/**
+!game_data/storage/event_backups/.gitkeep
+
+game_data/storage/tmp/**
+!game_data/storage/tmp/.gitkeep

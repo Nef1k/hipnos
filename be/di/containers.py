@@ -9,6 +9,7 @@ from di.services.tmp_storage_service import TmpStorageService
 from di.services.yaml import YamlService
 from game_data.services.gd_path import GDPathService
 from hipnos.services.actions import ActionSubsystem
+from hipnos.services.events import EventSubsystem
 from hipnos.services.memory import MemoryService
 from hipnos.services.phrases import PhraseSubsystem
 from hipnos.services.program import ProgramSubsystem
@@ -60,6 +61,12 @@ class Container(containers.DeclarativeContainer):
         gd_path_service,
     )
 
+    event_subsystem: EventSubsystem = providers.Singleton(
+        EventSubsystem,
+        config.HIPNOS_EVENTS_BACKUP_DIR,
+        notification_subsystem,
+    )
+
     memory_service: MemoryService = providers.Factory(
         MemoryService,
         gd_path_service,
@@ -71,7 +78,7 @@ class Container(containers.DeclarativeContainer):
         ActionSubsystem,
         config.HIPNOS_ACTIONS_ROOT,
         sc_service,
-        notification_subsystem,
+        event_subsystem,
     )
 
     phrase_subsystem: PhraseSubsystem = providers.Factory(
