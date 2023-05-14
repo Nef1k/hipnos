@@ -17,6 +17,9 @@ celery = "*"
 flower = "*"
 oyaml = "*"
 markdown = "*"
+channels = {extras = ["daphne"], version = "*"}
+channels-redis = "*"
+clipboard = "*"
 
 [dev-packages]
 

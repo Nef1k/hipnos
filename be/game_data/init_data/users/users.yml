@@ -1,0 +1,23 @@
+users:
+  nef1k:
+    first_name: "Valeriy"
+    last_name: "Nefedov"
+    creds:
+      - password
+    description: "Admin user"
+  julia:
+    first_name: "Julia"
+    last_name: "Arshba"
+    creds:
+      - password
+    description: "2nd Admin user"
+
+  ponos:
+    creds:
+      - token
+    description: "Ponos user"
+
+  test_device:
+    creds:
+      - token
+    description: "User for a test device"

@@ -13,7 +13,8 @@ from hipnos.services.memory import MemoryService
 from hipnos.services.phrases import PhraseSubsystem
 from hipnos.services.program import ProgramSubsystem
 from hipnos.services.reset import ResetService
-from users.services.user_service import UserService
+from notifications.services.notifications import NotificationSubsystem
+from users.services.users import UserSubsystem
 
 
 class Container(containers.DeclarativeContainer):
@@ -22,10 +23,6 @@ class Container(containers.DeclarativeContainer):
     sc_service: ServiceContainerService = providers.Factory(
         ServiceContainerService,
         __name__,
-    )
-
-    user_service: UserService = providers.Factory(
-        UserService,
     )
 
     tmp_storage_service: TmpStorageService = providers.Factory(
@@ -53,6 +50,16 @@ class Container(containers.DeclarativeContainer):
         yaml_service,
     )
 
+    user_subsystem: UserSubsystem = providers.Factory(
+        UserSubsystem,
+        gd_path_service,
+    )
+
+    notification_subsystem: NotificationSubsystem = providers.Singleton(
+        NotificationSubsystem,
+        gd_path_service,
+    )
+
     memory_service: MemoryService = providers.Factory(
         MemoryService,
         gd_path_service,
@@ -64,6 +71,7 @@ class Container(containers.DeclarativeContainer):
         ActionSubsystem,
         config.HIPNOS_ACTIONS_ROOT,
         sc_service,
+        notification_subsystem,
     )
 
     phrase_subsystem: PhraseSubsystem = providers.Factory(

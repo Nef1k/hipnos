@@ -14,6 +14,7 @@ from hipnos.actions.base import BaseAction
 from hipnos.models import HipnosAction
 from hipnos.models import PhraseAction
 from hipnos.services.initializers.actions import ActionInitializer
+from notifications.services.notifications import NotificationSubsystem
 
 
 class ActionSubsystem(BaseSubsystem):
@@ -21,9 +22,13 @@ class ActionSubsystem(BaseSubsystem):
             self,
             actions_root: str,
             sc_service: ServiceContainerService,
+            notification_subsystem: NotificationSubsystem,
     ):
         self.actions_root = actions_root
         self.sc_service = sc_service
+        # TODO: replace this with event service
+        self.notification_subsystem = notification_subsystem
+
         self.initializer = ActionInitializer(
             self.actions_root,
             self,
@@ -74,7 +79,8 @@ class ActionSubsystem(BaseSubsystem):
             f'Executing action '
             f'{build_action_execution(action_name, args, kwargs, execution_result)}'
         )
-        # TODO: emit event upon action execution
+
+        self.notification_subsystem.broadcast('update motherfucker')
 
     def execute_action_by_info(self, action_info_instance: PhraseAction):
         action_name = action_info_instance.action.name

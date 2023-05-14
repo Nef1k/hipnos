@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',  # required for serving swagger ui's css/js files
@@ -43,8 +45,8 @@ INSTALLED_APPS = [
     'django_celery_results',
 
     'users',
-    # 'c1db',
     'hipnos',
+    'notifications',
 
     'di',
 ]
@@ -80,6 +82,8 @@ CORS_ALLOWED_ORIGINS = [
 ROOT_URLCONF = 'app.urls'
 
 WSGI_APPLICATION = 'app.wsgi.application'
+
+ASGI_APPLICATION = 'app.asgi.application'
 
 TEMPLATES = [
     {
@@ -131,7 +135,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=365),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'TMP_TOKEN_LIFETIME': timedelta(minutes=60),
 
