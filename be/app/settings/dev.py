@@ -12,7 +12,7 @@ SECRET_KEY = "dev_signing_key_3o45yhb1028rt54h08upquitgb0925yhtbphwetherthesgd"
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = False
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 CHANNEL_LAYERS = {
     "default": {

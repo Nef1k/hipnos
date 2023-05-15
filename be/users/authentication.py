@@ -1,3 +1,5 @@
+from typing import Dict
+
 from channels.db import database_sync_to_async
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken
@@ -35,11 +37,27 @@ class TokenAuth(JWTAuthentication):
             return b''
         headers = dict(headers)
 
-        token = headers.get(b'authorization')
+        token = headers.get(b'authorization') or self._get_from_protocol_header(headers)
         if not token:
             return b''
 
         return token
+
+    def _get_from_protocol_header(self, headers: Dict[bytes, bytes]) -> bytes:
+        # Fuck chrome for not letting set headers in websockets
+        if b'sec-websocket-protocol' not in headers:
+            return b''
+
+        protocols = headers[b'sec-websocket-protocol']
+        protocols = protocols.split(b', ')
+
+        for protocol in protocols:
+            if not protocol.startswith(b'authorization_'):
+                continue
+
+            return protocol[len(b'authorization_'):]
+
+        return b''
 
 
 class TokenMiddleware:

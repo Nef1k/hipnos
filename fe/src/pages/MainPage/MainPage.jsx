@@ -7,6 +7,7 @@ import Memories, {MemoryType} from "../../components/Memories/Memories";
 import {useNavigate} from "react-router-dom";
 import Program from "../../components/Program/Program";
 import {axiosInstance} from "../../api/axios";
+import useNotifications from "../../hooks/useNotifications";
 
 const MainPage = () => {
   const [memories, setMemories] = useState([]);
@@ -23,7 +24,9 @@ const MainPage = () => {
 
   const handlePhraseSubmit = (phrase) => {
     submitPhrase(phrase)
-      .catch((e) => {console.log(e)})
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   async function fetchMemories() {
@@ -61,12 +64,39 @@ const MainPage = () => {
       });
   }
 
-  function beginFetchingData() {
-    refreshData();
+  function handleMemoriesNotifications(payload) {
+    fetchMemories()
+      .catch((e) => {
+        console.error(e);
+      });
   }
 
+  function handleProgramsNotifications(payload) {
+    fetchPrograms()
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
+  function handlePhraseNotifications(payload) {
+    fetchPrograms()
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
+  const {subscribe, unsubscribe} = useNotifications();
+
   useEffect(() => {
-    beginFetchingData();
+    subscribe({
+      "memories": handleMemoriesNotifications,
+      "programs": handleProgramsNotifications,
+      "phrases": handlePhraseNotifications,
+    })
+    refreshData();
+    return () => {
+      unsubscribe();
+    }
   }, []);
 
   return (

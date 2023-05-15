@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
+import {NotificationsProvider} from "./context/NotificationsProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
-      <App className="test" />
+      <NotificationsProvider>
+        <App className="test" />
+      </NotificationsProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

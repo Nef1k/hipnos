@@ -12,7 +12,7 @@ class NotificationChannel(models.Model):
 
     @property
     def group_name(self):
-        return f'channel_{self.name}'
+        return f'{self.name}'
 
     def __str__(self):
         return f'{self.name}'

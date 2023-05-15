@@ -29,7 +29,7 @@ class NotificationsConsumer(WebsocketConsumer):
 
         user = self.scope['user']
 
-        channels_str = self.scope['query_params'].get('channels')
+        channels_str = self.scope['query_params'].get('channels', '')
         channels = channels_str.split(',')
         channel_instances = self.notification_subsystem.get_channels_by_name(channels)
         if len(channel_instances) != len(channels) or not channel_instances:
@@ -52,7 +52,14 @@ class NotificationsConsumer(WebsocketConsumer):
             }
         )
 
-        self.accept()
+        self._accept_with_subprotocol()
+
+    def _accept_with_subprotocol(self):
+        headers = dict(self.scope['headers'])
+        subprotocols = headers.get(b'sec-websocket-protocol') or b''
+        subprotocols = subprotocols.split(b', ')
+        subprotocol = subprotocols[0].decode('utf-8') if subprotocols else None
+        self.accept(subprotocol=subprotocol)
 
     def disconnect(self, code):
         for channel in self.scope['channels']:
