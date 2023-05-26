@@ -20,6 +20,8 @@ markdown = "*"
 channels = {extras = ["daphne"], version = "*"}
 channels-redis = "*"
 clipboard = "*"
+amzqr = "*"
+fpdf = "*"
 
 [dev-packages]
 

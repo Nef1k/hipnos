@@ -62,10 +62,11 @@ class MemoryInitializer(BaseInitializer):
             memory_instance = Memory(
                 name=memory_name,
                 title=memory['title'],
+                is_lore=memory.get('is_lore', True),
                 markdown_text=markdown_body,
                 html_text=html_body,
                 order_key=idx,
-                memory_type_id=memory_type_id
+                memory_type_id=memory_type_id,
             )
 
             memories.append(memory_instance)

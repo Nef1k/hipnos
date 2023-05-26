@@ -86,3 +86,32 @@ phrases:
         phrase: helios
       unlock_memory:
         memory: poisk_propavshego_rebenka
+
+  # QR phrases
+  qr_non_memory_phrase:
+    qr: true
+    phrase: "aeirtg2l435uin"
+    actions:
+      boom:
+        boom_id: qr_boom
+
+  qr_phrase_1:
+    qr: true
+    phrase: "iq23u5ngrpiwu"
+    actions:
+      unlock_memory:
+        memory: po_sledam_ubiitsy
+
+  qr_phrase_2:
+    qr: true
+    phrase: "f35gw3i45un"
+    actions:
+      unlock_memory:
+        memory: poiski_sokrovisha
+
+  qr_phrase_3_julia:
+    qr: true
+    phrase: "qr motherfucker"
+    actions:
+      unlock_memory:
+        memory: po_sledam_ubiitsy

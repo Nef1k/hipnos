@@ -15,6 +15,7 @@ memories:
   pobeg_iz_tyurmy:
     title: "Побег из тюрьмы"
     type: text
+    is_lore: false
     markdown_file: "./markdown/pobeg_iz_tyurmy.md"
   po_sledam_ubiitsy:
     title: "По следам убийцы"
@@ -23,6 +24,7 @@ memories:
   pokhod_v_gory:
     title: "Поход в горы"
     type: video
+    is_lore: false
     markdown_file: "./markdown/pokhod_v_gory.md"
   poisk_propavshego_rebenka:
     title: "Поиск пропавшего ребенка"

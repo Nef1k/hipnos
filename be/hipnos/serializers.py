@@ -6,10 +6,10 @@ from hipnos.models import Memory
 
 class MemoryListSerializer(serializers.ModelSerializer):
     memory_type = serializers.IntegerField(source='memory_type_id')
-    is_locked = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
 
-    def get_is_locked(self, instance: Memory):
-        return instance.unlocked_at is None
+    def get_title(self, instance: Memory):
+        return instance.title if not instance.is_locked else None
 
     class Meta:
         model = Memory

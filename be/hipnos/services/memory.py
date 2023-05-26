@@ -25,7 +25,7 @@ class MemoryService(BaseSubsystem):
         )
 
     def get_memory_by_name(self, name: str) -> Memory:
-        return Memory.objects.get(name=name)
+        return Memory.objects.select_related('memory_type').get(name=name)
 
     def unlock_memory(self, memory_name: str):
         memory = self.get_memory_by_name(memory_name)

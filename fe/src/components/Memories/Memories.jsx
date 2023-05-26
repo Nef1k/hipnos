@@ -38,7 +38,7 @@ const Memories = ({items, onMemoryClick, onBlockedClick}) => {
               onClick={(e) => onClick(e, idx)}
             >
               <img src={getMemoryImage(item)} alt=""/>
-              <p>{item.title}</p>
+              <p>{item.title || "? ? ?"}</p>
             </div>
           )
         })}

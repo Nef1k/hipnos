@@ -9,7 +9,7 @@ from di.containers import Container
 from hipnos.models import HipnosProgram
 from hipnos.serializers import ProgramListSerializer
 from hipnos.serializers import SubmitPhraseSerializer
-from hipnos.services.program import ProgramSubsystem
+from hipnos.services.phrases import PhraseSubsystem
 
 
 class ProgramListView(generics.ListAPIView):
@@ -25,17 +25,17 @@ class SubmitPhraseView(APIView):
     @inject
     def __init__(
             self,
-            program_subsystem: ProgramSubsystem = Provide[Container.program_subsystem],
+            phrase_subsystem: PhraseSubsystem = Provide[Container.phrase_subsystem],
             **kwargs
     ):
         super().__init__(**kwargs)
-        self.program_subsystem = program_subsystem
+        self.phrase_subsystem = phrase_subsystem
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         phrase = serializer.validated_data['phrase']
-        self.program_subsystem.submit_phrase(phrase)
+        self.phrase_subsystem.submit_phrase(phrase)
 
         return Response(status=status.HTTP_200_OK)

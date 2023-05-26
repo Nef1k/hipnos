@@ -21,6 +21,7 @@ class Memory(models.Model, NamedModelMixin):
     name = models.CharField(max_length=255, null=False, unique=True)
     title = models.CharField(max_length=255, null=False, default='')
     unlocked_at = models.DateTimeField(null=True)
+    is_lore = models.BooleanField(null=False, default=True)
 
     markdown_text = models.TextField(null=False, default='')
     html_text = models.TextField(null=False, default='')
@@ -28,6 +29,10 @@ class Memory(models.Model, NamedModelMixin):
     order_key = models.IntegerField(null=False)
 
     memory_type = models.ForeignKey(MemoryType, on_delete=models.DO_NOTHING)
+
+    @property
+    def is_locked(self) -> bool:
+        return self.unlocked_at is None
 
 
 class HProgramState(models.Model, NamedModelMixin):

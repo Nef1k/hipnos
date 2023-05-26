@@ -4,10 +4,12 @@ from django.conf import settings
 
 from di.services.files import FilesService
 from di.services.markdown import MarkdownService
+from di.services.qr import QRService
 from di.services.service_container import ServiceContainerService
 from di.services.tmp_storage_service import TmpStorageService
 from di.services.yaml import YamlService
 from game_data.services.gd_path import GDPathService
+from hipnos.services.HQR import HQRSubsystem
 from hipnos.services.actions import ActionSubsystem
 from hipnos.services.events import EventSubsystem
 from hipnos.services.memory import MemoryService
@@ -20,6 +22,10 @@ from users.services.users import UserSubsystem
 
 class Container(containers.DeclarativeContainer):
     config = settings
+
+    qr_service: QRService = providers.Factory(
+        QRService,
+    )
 
     sc_service: ServiceContainerService = providers.Factory(
         ServiceContainerService,
@@ -94,9 +100,17 @@ class Container(containers.DeclarativeContainer):
         phrase_subsystem,
     )
 
+    hqr_subsystem: HQRSubsystem = providers.Factory(
+        HQRSubsystem,
+        config.HIPNOS_QR_OUTPUT_DIR,
+        config.HIPNOS_QR_LOGOS_DIR,
+        gd_path_service,
+        qr_service,
+        memory_service,
+    )
+
     reset_service: ResetService = providers.Factory(
         ResetService,
-        memory_service,
         sc_service,
     )
 

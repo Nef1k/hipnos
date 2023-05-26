@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const BASE_URL = process.env.REACT_APP_HIPNOS_BASE_URL || "http://127.0.0.1:8000";
-export const NOTIFICATIONS_WS_URL = process.env.REACT_APP_NOTIFICATIONS_WS_URL || "ws://localhost:8000/ws/notifications/test/";
+export const BASE_URL = process.env.REACT_APP_HIPNOS_BASE_URL || "http://192.168.1.160:8000";
+export const NOTIFICATIONS_WS_URL = process.env.REACT_APP_NOTIFICATIONS_WS_URL || "ws://192.168.1.160:8000/ws/notifications/test/";
 export const NOTIFICATIONS_AUTH_TOKEN = process.env.REACT_APP_TOKEN;
 
 export const axiosInstance = axios.create({
