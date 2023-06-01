@@ -41,8 +41,10 @@
 .h11{ height: 92vh; }
 .h12{ height: 100vh; }
 
-.bgRed { background-color: red; }
-.bgGreen { background-color: green; }
-.bgBlue { background-color: blue; }
-.bgMagenta { background-color: magenta; }
-.bgYellow { background-color: yellow; }
+.bgRed { background-color: darkred; }
+.bgGreen { background-color: darkgreen; }
+.bgBlue { background-color: darkblue; }
+.bgMagenta { background-color: darkmagenta; }
+.bgYellow { background-color: darkgoldenrod; }
+.bgCyan { background-color: darkcyan; }
+.bgWhite { background-color: lightgrey; }
