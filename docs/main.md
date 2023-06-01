@@ -19,6 +19,7 @@
     * [[WIP] Программы](be/subsystems/hipnos_programs.md)
     * [[WIP] События](be/subsystems/events.md)
     * [[WIP] Уведомления](be/subsystems/notifications.md)
+* [Девайсы](devices/main.md)
 * PONOS (основной front-end)
   * WIP...
 
