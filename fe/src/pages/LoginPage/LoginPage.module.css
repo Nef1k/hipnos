@@ -1,0 +1,33 @@
+.mainWrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    align-items: center;
+
+    background-image: url("../../../public/images/admin_background.jpg");
+    background-size: 100%;
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    margin-left: 200px;
+
+    width: 440px;
+    height: 300px;
+
+    padding: 40px;
+    box-shadow: 0 0 5px #999;
+
+    border-radius: 5px;
+
+    background-color: #FEFEFE;
+}
+
+.bottomLinks {
+    display: flex;
+    justify-content: space-between;
+}

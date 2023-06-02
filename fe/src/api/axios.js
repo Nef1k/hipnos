@@ -8,6 +8,10 @@ export const axiosInstance = axios.create({
   baseURL: BASE_URL,
 });
 
+export const axiosPrivate = axios.create({
+  baseURL: BASE_URL,
+})
+
 export const notificationsWebsocket = (channels, token = NOTIFICATIONS_AUTH_TOKEN) => {
   // Fuck chrome for not letting set headers in websockets
   const authProtocol = `authorization_${NOTIFICATIONS_AUTH_TOKEN}`;

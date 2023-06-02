@@ -17,3 +17,11 @@ services:
     restart: unless-stopped
     ports:
       - "8081:8081"
+  be_dev_proxy:
+    container_name: be_dev_proxy
+    hostname: be_dev_proxy
+    image: nginx
+    ports:
+      - "80:8001"
+      - "443:8443"
+

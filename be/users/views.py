@@ -28,7 +28,14 @@ class CookieTokenObtainPairView(TokenObtainPairView):
         refresh_token = response.data.get('refresh')
 
         if refresh_token:
-            response.set_cookie(cookie_name, refresh_token, max_age=cookie_max_age, httponly=True, secure=True)
+            response.set_cookie(
+                cookie_name,
+                refresh_token,
+                max_age=cookie_max_age,
+                httponly=True,
+                secure=True,
+                samesite='None',
+            )
             del response.data['refresh']
 
         return super().finalize_response(request, response, *args, **kwargs)
