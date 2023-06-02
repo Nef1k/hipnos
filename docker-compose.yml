@@ -21,7 +21,7 @@ services:
     container_name: be_dev_proxy
     hostname: be_dev_proxy
     image: nginx
-    ports:
-      - "80:8001"
-      - "443:8443"
-
+    volumes:
+      - "./data/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf"
+      - "./data/nginx/certs/:/etc/ssl/private"
+    network_mode: host
