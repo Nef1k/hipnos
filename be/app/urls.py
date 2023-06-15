@@ -23,6 +23,7 @@ urlpatterns = [
     path('healthcheck/', views.HealthcheckView.as_view(), name='healthcheck'),
     path('users/', include('users.urls')),
     path('hipnos/', include('hipnos.urls')),
+    path('synergy/', include('synergy.urls')),
 ]
 
 

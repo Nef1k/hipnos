@@ -73,7 +73,7 @@ class CookieLogoutView(APIView):
         cookie_name = settings.SIMPLE_JWT.get('AUTH_COOKIE_NAME', 'refresh_token')
 
         response = Response(status=204)
-        response.delete_cookie(cookie_name)
+        response.delete_cookie(cookie_name, samesite='None')
         return response
 
 

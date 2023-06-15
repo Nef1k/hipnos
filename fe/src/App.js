@@ -8,6 +8,7 @@ import BaseLayout from "./components/AdminComponents/BaseLayout/BaseLayout";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import PersistLogin from "./components/AdminComponents/PersistLogin/PersistLogin";
 import RequireAuth from "./components/AdminComponents/RequireAuth/RequireAuth";
+import DashboardFrame from "./components/AdminComponents/DashboardFrame/DashboardFrame";
 
 function App() {
   return (
@@ -17,8 +18,10 @@ function App() {
           {/*Protected pages (admin dashboard)*/}
           <Route path="/" element={<BaseLayout/>}>
             <Route element={<PersistLogin/>}>
-              <Route element={<RequireAuth />}>
-                <Route index element={<AdminPage/>}/>
+              <Route element={<RequireAuth/>}>
+                <Route element={<DashboardFrame/>}>
+                  <Route index element={<AdminPage/>}/>
+                </Route>
               </Route>
 
               <Route path="login/" element={<LoginPage/>}/>

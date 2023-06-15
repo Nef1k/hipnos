@@ -10,16 +10,19 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import {SnacksProvider} from "./context/SnacksProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
   <BrowserRouter>
-    <AuthProvider>
-      <NotificationsProvider>
-        <App className="test"/>
-      </NotificationsProvider>
-    </AuthProvider>
+    <SnacksProvider>
+      <AuthProvider>
+        <NotificationsProvider>
+          <App className="test"/>
+        </NotificationsProvider>
+      </AuthProvider>
+    </SnacksProvider>
   </BrowserRouter>
   // </React.StrictMode>
 );

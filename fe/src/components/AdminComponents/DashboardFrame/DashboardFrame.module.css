@@ -1,0 +1,10 @@
+* {
+    font-family: Roboto, Verdana, sans-serif;
+}
+
+.mainWrapper {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}

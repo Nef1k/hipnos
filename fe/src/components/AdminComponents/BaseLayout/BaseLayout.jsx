@@ -3,7 +3,7 @@ import {Outlet} from "react-router-dom";
 
 const BaseLayout = () => {
   return (
-    <main>
+    <main className={s.mainWrapper}>
       <Outlet />
     </main>
   )

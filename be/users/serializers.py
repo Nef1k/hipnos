@@ -23,8 +23,15 @@ class CookieTokenRefreshSerializer(TokenRefreshSerializer):
     def validate(self, attrs):
         cookie_name = settings.SIMPLE_JWT.get('AUTH_COOKIE_NAME', 'refresh_token')
 
-        attrs['refresh'] = self.context['request'].COOKIES.get(cookie_name)
-        if attrs['refresh']:
-            return super().validate(attrs)
+        refresh_token_str = self.context['request'].COOKIES.get(cookie_name)
+
+        if refresh_token_str:
+            attrs['refresh'] = refresh_token_str
+            new_attrs = super().validate(attrs)
+
+            refresh_token = self.token_class(refresh_token_str)
+            new_attrs['username'] = refresh_token.payload['username']
+
+            return new_attrs
         else:
             raise InvalidToken(f'No valid token found in cookie "{cookie_name}"')
