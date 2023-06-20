@@ -19,7 +19,7 @@ const DashboardFrame = () => {
   }
 
   const setUserDefaultPage = async (newPage) => {
-    axiosPrivate.post("synergy/pages/user_default/", {
+    await axiosPrivate.post("synergy/pages/user_default/", {
       page_id: newPage?.id,
     });
   }
@@ -32,7 +32,12 @@ const DashboardFrame = () => {
     if (!newPage) return;
 
     await setUserDefaultPage(newPage);
+    await fetchPages();
     navigate(`${newPage?.name}/`);
+  }
+
+  const handleWidgetAdd = async () => {
+    console.log("New widget!");
   }
 
   useEffect(() => {
@@ -45,6 +50,7 @@ const DashboardFrame = () => {
         pages={pages}
         onPageAdd={handlePageAdd}
         onPageChange={handlePageChange}
+        onWidgetAdd={handleWidgetAdd}
       />
       <Outlet />
     </div>

@@ -1,10 +1,13 @@
 import {
   Avatar,
-  Box, Button, ButtonGroup, Divider,
+  Box,
+  Divider,
   Drawer,
   IconButton,
   List,
-  ListItem, ListItemButton, ListItemText,
+  ListItem,
+  ListItemButton,
+  ListItemText,
   Menu,
   MenuItem,
   Toolbar,
@@ -12,12 +15,11 @@ import {
   Typography
 } from "@mui/material";
 import AdbIcon from "@mui/icons-material/Adb";
-import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import useAuth from "../../../../hooks/useAuth";
 import {useState} from "react";
 
-const NavMobile = ({pages, selectedPageId, onPageChange, onAddPage, onLogout, sx}) => {
+const NavMobile = ({sx, pages, selectedPageId, onLogout, onPageChange, onAddPage, onWidgetAdd}) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isDrawerOpened, setDrawerOpened] = useState(false);
 
@@ -88,7 +90,7 @@ const NavMobile = ({pages, selectedPageId, onPageChange, onAddPage, onLogout, sx
             return (
               <ListItem disablePadding key={page.id}>
                 <ListItemButton onClick={(e) => {handlePageClick(e, page)}}>
-                  <ListItemText primary={page.display_name}/>
+                  <ListItemText primary={page.display_name || page.name}/>
                 </ListItemButton>
               </ListItem>
             );
@@ -105,6 +107,7 @@ const NavMobile = ({pages, selectedPageId, onPageChange, onAddPage, onLogout, sx
       <Box sx={{flexGrow: 1, display: "flex", alignItems: "center"}}>
         <IconButton
           color="inherit"
+          onClick={onWidgetAdd}
         >
           <NoteAddIcon/>
         </IconButton>

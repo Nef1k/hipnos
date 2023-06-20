@@ -1,21 +1,20 @@
 import {
-  AppBar,
   Avatar,
   Box,
   Button, ButtonGroup,
-  Container, IconButton, Menu, MenuItem,
+  IconButton, Menu, MenuItem,
   Toolbar,
   Tooltip,
   Typography
 } from "@mui/material";
 import AdbIcon from "@mui/icons-material/Adb";
+import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 import ButtonDropDown from "../../../AppBarDropDown/ButtonDropDown";
-import {AddBox} from "@mui/icons-material";
+import WidgetsIcon from '@mui/icons-material/Widgets';
 import useAuth from "../../../../hooks/useAuth";
-import useLogout from "../../../../hooks/useLogout";
 import {useState} from "react";
 
-const NavDesktop = ({pages, selectedPageId, onPageChange, onAddPage, onLogout, sx}) => {
+const NavDesktop = ({sx, pages, selectedPageId, onLogout, onPageChange, onAddPage, onWidgetAdd}) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const {auth} = useAuth();
@@ -55,15 +54,23 @@ const NavDesktop = ({pages, selectedPageId, onPageChange, onAddPage, onLogout, s
             selectedKey={selectedPageId}
             emptyLabel="Выберите страницу"
             onSelectedChange={onPageChange}
-            getItemCaption={(item) => item.display_name}
+            getItemCaption={(item) => item.display_name || item.name}
             getItemKey={(item) => item.id}
           />
           <Button
             color="inherit"
             onClick={onAddPage}
           >
-            <AddBox/>
+            <AddToQueueIcon/>
           </Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button
+            color="inherit"
+            style={{marginLeft: "10px"}}
+            endIcon={<WidgetsIcon />}
+            onClick={onWidgetAdd}
+          >Добавить виджет</Button>
         </ButtonGroup>
       </Box>
 
