@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import PersistLogin from "./components/AdminComponents/PersistLogin/PersistLogin";
 import RequireAuth from "./components/AdminComponents/RequireAuth/RequireAuth";
 import DashboardFrame from "./components/AdminComponents/DashboardFrame/DashboardFrame";
+import PageSelector from "./pages/PageSelector/PageSelector";
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
             <Route element={<PersistLogin/>}>
               <Route element={<RequireAuth/>}>
                 <Route element={<DashboardFrame/>}>
-                  <Route index element={<AdminPage/>}/>
+                  <Route index element={<PageSelector timeout={1000} />}/>
+
+                  <Route path=":pageName/" element={<AdminPage />} />
                 </Route>
               </Route>
 

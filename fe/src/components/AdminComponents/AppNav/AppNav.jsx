@@ -1,35 +1,19 @@
 import {
   AppBar,
-  Avatar,
-  Box,
-  Button, ButtonGroup,
-  Container, IconButton, Menu, MenuItem,
-  Toolbar,
-  Tooltip,
-  Typography
+  Container,
 } from "@mui/material";
-import AdbIcon from '@mui/icons-material/Adb';
-import useAuth from "../../../hooks/useAuth";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import useLogout from "../../../hooks/useLogout";
-import ButtonDropDown from "../../AppBarDropDown/ButtonDropDown";
-import {AddBox} from "@mui/icons-material";
+import NavDesktop from "./NavDesktop/NavDesktop";
+import NavMobile from "./NavMobile/NavMobile";
+import {useParams} from "react-router-dom";
 
-const AppNav = ({pages, onPageAdd}) => {
-  const [anchorElUser, setAnchorElUser] = useState(null);
+const AppNav = ({pages, onPageAdd, onPageChange}) => {
   const [selectedPage, setSelectedPage] = useState(null);
 
-  const selectedPageId = selectedPage?.id;
-  const {auth} = useAuth();
+  const {pageName} = useParams();
+
   const logout = useLogout();
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   const handleLogoutClick = async () => {
     await logout();
@@ -37,82 +21,39 @@ const AppNav = ({pages, onPageAdd}) => {
 
   const handlePageChange = async (newPage) => {
     setSelectedPage(newPage);
+    onPageChange && onPageChange(newPage);
   }
 
   const handleAddPage = async () => {
     onPageAdd && onPageAdd();
   }
 
+  useEffect(() => {
+    const filteredPages = pages?.filter((page) => page.name === pageName);
+    if (filteredPages?.length !== 0) {
+      const page = filteredPages[0];
+      setSelectedPage(page);
+    }
+  }, [pageName, pages]);
+
   return (
     <AppBar position="static">
-      <Container style={{maxWidth: '100%'}}>
-        <Toolbar disableGutters>
-          <AdbIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: {xs: 'none', md: 'flex'},
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            SYNERGY
-          </Typography>
-          <Box sx={{flexGrow: 1, display: "flex", alignItems: "center"}}>
-            <ButtonGroup>
-              <ButtonDropDown
-                items={pages}
-                selectedKey={selectedPageId}
-                emptyLabel="Выберите страницу"
-                onSelectedChange={handlePageChange}
-                getItemCaption={(item) => item.display_name}
-                getItemKey={(item) => item.id}
-              />
-              <Button
-                color="inherit"
-                onClick={handleAddPage}
-              >
-                <AddBox />
-              </Button>
-            </ButtonGroup>
-          </Box>
-
-          <Box sx={{flexGrow: 0}}>
-            <Tooltip title={auth.username}>
-              <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                <Avatar alt={auth.username}/>
-              </IconButton>
-            </Tooltip>
-
-            <Menu
-              sx={{mt: '45px'}}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleLogoutClick}>
-                <Typography>Выйти</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
+      <Container style={{maxWidth: "100%"}}>
+        <NavDesktop
+          sx={{display: {xs: "none", md: "flex"}}}
+          pages={pages}
+          selectedPageId={selectedPage?.id}
+          onAddPage={handleAddPage}
+          onLogout={handleLogoutClick}
+          onPageChange={handlePageChange}
+        />
+        <NavMobile
+          sx={{display: {xs: "flex", md: "none"}}}
+          pages={pages}
+          onAddPage={handleAddPage}
+          onLogout={handleLogoutClick}
+          onPageChange={handlePageChange}
+        />
       </Container>
     </AppBar>
   )

@@ -1,6 +1,6 @@
 import {Button, Menu, MenuItem} from "@mui/material";
 import {KeyboardArrowDown} from "@mui/icons-material";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 const ButtonDropDown = ({items, selectedKey, emptyLabel, onSelectedChange, getItemCaption, getItemKey}) => {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -9,6 +9,8 @@ const ButtonDropDown = ({items, selectedKey, emptyLabel, onSelectedChange, getIt
   const currentItem = _getCurrentItem();
 
   const handleMenuOpen = (event) => {
+    if (!items || !items?.length) return;
+
     setMenuAnchorEl(event.target);
   }
 
