@@ -17,6 +17,7 @@ from hipnos.services.phrases import PhraseSubsystem
 from hipnos.services.program import ProgramSubsystem
 from hipnos.services.reset import ResetService
 from notifications.services.notifications import NotificationSubsystem
+from synergy.services.pages import PageService
 from users.services.users import UserSubsystem
 
 
@@ -71,6 +72,10 @@ class Container(containers.DeclarativeContainer):
         EventSubsystem,
         config.HIPNOS_EVENTS_BACKUP_DIR,
         notification_subsystem,
+    )
+
+    page_service: PageService = providers.Factory(
+        PageService,
     )
 
     memory_service: MemoryService = providers.Factory(

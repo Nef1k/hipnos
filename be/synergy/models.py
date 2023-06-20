@@ -25,3 +25,11 @@ class SynergyTab(models.Model):
 
     class Meta:
         db_table = 'synergy_tab'
+
+
+class DefaultUserPage(models.Model):
+    user = models.OneToOneField(User, null=False, on_delete=models.CASCADE)
+    page = models.ForeignKey(SynergyPage, null=False, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'synergy_user_page'
