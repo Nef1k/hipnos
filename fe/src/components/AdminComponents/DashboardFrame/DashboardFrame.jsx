@@ -2,9 +2,11 @@ import s from './DashboardFrame.module.css';
 import AppNav from "../AppNav/AppNav";
 import {Outlet, useNavigate} from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 const DashboardFrame = () => {
+  const tabsRef = useRef(null);
+
   const axiosPrivate = useAxiosPrivate();
   const [pages, setPages] = useState([]);
   const navigate = useNavigate();
@@ -37,12 +39,15 @@ const DashboardFrame = () => {
   }
 
   const handleWidgetAdd = async () => {
-    console.log("New widget!");
+    tabsRef?.current?.createWidget();
   }
 
   useEffect(() => {
     fetchPages().catch();
   }, []);
+
+  useEffect(() => {
+  }, [tabsRef]);
 
   return (
     <div className={s.mainWrapper}>
@@ -52,7 +57,9 @@ const DashboardFrame = () => {
         onPageChange={handlePageChange}
         onWidgetAdd={handleWidgetAdd}
       />
-      <Outlet />
+      <Outlet
+        context={[tabsRef]}
+      />
     </div>
   )
 }

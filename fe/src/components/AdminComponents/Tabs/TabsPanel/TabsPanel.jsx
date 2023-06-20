@@ -1,7 +1,6 @@
 import PanelsContainer from "../../PanelsContainer/PanelsContainer";
-import {useEffect, useRef, useState} from "react";
+import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
-import {Button} from "@mui/material";
 
 export const emptyLayout = () => ({
   dockbox: {
@@ -10,29 +9,14 @@ export const emptyLayout = () => ({
   }
 })
 
-const TabsPanel = ({pageName, page, onLayoutSave}) => {
+const TabsPanel = forwardRef(({pageName, page, onLayoutSave}, ref) => {
   const dockRef = useRef(null);
   const [layout, setLayout] = useState(emptyLayout());
   const [canSave, setCanSave] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
 
-  const pushLayout = async (pageName, layout) => {
-    await axiosPrivate.put(`synergy/pages/${pageName}/`, {
-      page_data: layout,
-    });
-  }
-
-  const loadTab = (data) => {
-    return {
-      "id": data.id,
-      "title": "The tab",
-      "content": <div>Content goes here...{data.id}</div>,
-      "closable": true,
-    };
-  }
-
-  const bigRandom = () => Math.trunc(Math.random() * 10000000)
+  const bigRandom = () => Math.trunc(Math.random() * 1000000000)
 
   const newWindow = () => {
     return {
@@ -55,9 +39,26 @@ const TabsPanel = ({pageName, page, onLayoutSave}) => {
     return layout;
   }
 
-  const handleTmpBtnClick = () => {
-    const srcLayout = dockRef.current.saveLayout();
-    dockRef.current.loadLayout(createWindow(srcLayout));
+  useImperativeHandle(ref, () => ({
+    async createWidget() {
+      const srcLayout = dockRef.current.saveLayout();
+      dockRef.current.loadLayout(createWindow(srcLayout));
+    }
+  }));
+
+  const pushLayout = async (pageName, layout) => {
+    await axiosPrivate.put(`synergy/pages/${pageName}/`, {
+      page_data: layout,
+    });
+  }
+
+  const loadTab = (data) => {
+    return {
+      "id": data.id,
+      "title": "The tab",
+      "content": <div>Content goes here...{data.id}</div>,
+      "closable": true,
+    };
   }
 
   const handleLayoutChange = async (newLayout) => {
@@ -88,18 +89,13 @@ const TabsPanel = ({pageName, page, onLayoutSave}) => {
   }, [page]);
 
   return (
-    <>
-      <Button
-        onClick={handleTmpBtnClick}
-      >asdf</Button>
-      <PanelsContainer
-        layout={layout}
-        loadTab={loadTab}
-        dockRef={dockRef}
-        onLayoutChange={handleLayoutChange}
-      />
-    </>
+    <PanelsContainer
+      layout={layout}
+      loadTab={loadTab}
+      dockRef={dockRef}
+      onLayoutChange={handleLayoutChange}
+    />
   );
-}
+});
 
 export default TabsPanel;
