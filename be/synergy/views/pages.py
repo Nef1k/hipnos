@@ -16,11 +16,18 @@ from synergy.services.pages import PageService
 
 
 class PageListCreateAPI(generics.ListCreateAPIView):
-    queryset = SynergyPage.objects.all()
+    queryset = SynergyPage.objects.order_by('display_name')
     serializer_class = SynergyPageListSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class PageDetailsAPI(generics.RetrieveUpdateAPIView):
+    queryset = SynergyPage.objects.all()
+    lookup_field = "name"
+    lookup_url_kwarg = "page_name"
+    serializer_class = SynergyPageDetailSerializer
 
 
 class UserDefaultPage(mixins.RetrieveModelMixin, generics.GenericAPIView):
