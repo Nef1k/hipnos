@@ -65,7 +65,7 @@ const AppNav = ({pages, onPageAdd, onPageChange, onWidgetAdd}) => {
   }, [pageName, pages]);
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" elevation={0}>
       <Container style={{maxWidth: "100%"}}>
         <NavDesktop
           sx={{display: {xs: "none", md: "flex"}}}

@@ -1,6 +1,5 @@
 from dependency_injector.wiring import Provide
 from dependency_injector.wiring import inject
-from django.core.exceptions import BadRequest
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import status
@@ -8,9 +7,11 @@ from rest_framework.response import Response
 
 from di.containers import Container
 from synergy.models import SynergyPage
+from synergy.models import SynergyTab
 from synergy.serializers import DefaultPageSerializer
 from synergy.serializers import SynergyPageDetailSerializer
 from synergy.serializers import SynergyPageListSerializer
+from synergy.serializers import TabDetailsSerializer
 from synergy.services.pages import DefaultPageNotSet
 from synergy.services.pages import PageService
 
@@ -25,9 +26,27 @@ class PageListCreateAPI(generics.ListCreateAPIView):
 
 class PageDetailsAPI(generics.RetrieveUpdateAPIView):
     queryset = SynergyPage.objects.all()
-    lookup_field = "name"
-    lookup_url_kwarg = "page_name"
+    lookup_field = 'name'
+    lookup_url_kwarg = 'page_name'
     serializer_class = SynergyPageDetailSerializer
+
+
+class WidgetListCreateAPI(generics.ListCreateAPIView):
+    queryset = SynergyTab.objects.order_by('display_name')
+    serializer_class = TabDetailsSerializer
+
+    @inject
+    def __init__(
+            self,
+            page_service: PageService = Provide[Container.page_service]
+    ):
+        super().__init__()
+        self.page_service = page_service
+
+    def perform_create(self, serializer):
+        page_name = self.request.parser_context['kwargs']['page_name']
+        page = self.page_service.get_page_by_name(page_name)
+        serializer.save(page=page)
 
 
 class UserDefaultPage(mixins.RetrieveModelMixin, generics.GenericAPIView):

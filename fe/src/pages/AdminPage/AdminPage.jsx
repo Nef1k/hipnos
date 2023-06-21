@@ -24,6 +24,22 @@ const AdminPage = () => {
     }
   }
 
+  async function removeTab(tabId) {
+    try {
+      await axiosPrivate.delete(`/synergy/tabs/${tabId}/`);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const handleTabsReload = async () => {
+    fetchPage(pageName).catch();
+  }
+
+  const handleTabRemove = async (tabId) => {
+    await removeTab(tabId);
+  }
+
   useEffect(() => {
     fetchPage(pageName).catch();
   }, [pageName]);
@@ -34,6 +50,8 @@ const AdminPage = () => {
         ref={tabsRef}
         pageName={pageName}
         page={pageData}
+        onTabsReload={handleTabsReload}
+        onTabRemove={handleTabRemove}
       />
     </div>
   )

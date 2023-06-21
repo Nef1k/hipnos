@@ -7,6 +7,7 @@ from users.serializers import UserInfoSerializer
 
 
 class TabDetailsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=False, required=False)
     is_initialized = serializers.SerializerMethodField()
 
     @staticmethod
@@ -15,7 +16,7 @@ class TabDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SynergyTab
-        fields = ['id', 'name', 'display_name', 'widget_args', 'is_initialized']
+        fields = ['id', 'display_name', 'widget_args', 'is_initialized']
 
 
 class SynergyPageListSerializer(serializers.ModelSerializer):

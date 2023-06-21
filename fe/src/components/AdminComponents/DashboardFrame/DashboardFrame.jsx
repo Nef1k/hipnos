@@ -26,6 +26,15 @@ const DashboardFrame = () => {
     });
   }
 
+  const createWidget = async (pageName) => {
+    try {
+      const response = await axiosPrivate.post(`synergy/pages/${pageName}/create_widget/`);
+      return response?.data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const handlePageAdd = async () => {
     console.log("page add");
   }
@@ -39,15 +48,16 @@ const DashboardFrame = () => {
   }
 
   const handleWidgetAdd = async () => {
-    tabsRef?.current?.createWidget();
+    const page = tabsRef?.current?.getCurrentPage();
+    const newTab = await createWidget(page?.name);
+    // await new Promise(resolve => setTimeout(resolve, 500));
+    // console.log(newTab);
+    tabsRef?.current?.createWidget(newTab.id).catch();
   }
 
   useEffect(() => {
     fetchPages().catch();
   }, []);
-
-  useEffect(() => {
-  }, [tabsRef]);
 
   return (
     <div className={s.mainWrapper}>

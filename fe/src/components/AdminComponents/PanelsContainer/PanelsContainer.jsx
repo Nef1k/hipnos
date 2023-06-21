@@ -12,7 +12,7 @@ const PanelsContainer = ({layout, dockRef, loadTab, onLayoutChange}) => {
         onLayoutChange={onLayoutChange}
         style={{
           position: "absolute",
-          top: 10,
+          top: 0,
           bottom: 0,
           left: 0,
           right: 0,

@@ -40,6 +40,14 @@ class PageService(BaseService):
             raise DefaultPageNotSet(f'Default page not set for user {user.username}')
         return page
 
+    @staticmethod
+    def get_page_by_name(page_name: str) -> Optional[SynergyPage]:
+        try:
+            tab = SynergyPage.objects.get(name=page_name)
+        except SynergyPage.DoesNotExist:
+            raise PageNotExists(f'Could not retrieve page with name "{page_name}"')
+        return tab
+
     @transaction.atomic
     def set_user_default_page(self, user: User, page: SynergyPage):
         try:
