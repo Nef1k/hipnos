@@ -3,10 +3,13 @@ import {useEffect, useRef, useState} from "react";
 
 const HFrame = ({
   style,
-  children,
+
+  header,
+  content,
+  footer,
 
   strokeWidth = 2,
-  borderOffset = 4,
+  borderOffset = strokeWidth,
 
   topLeftSizeHorizontal = 50, topLeftSizeVertical = 50,
   topRightSizeHorizontal = 30, topRightSizeVertical = 30,
@@ -28,12 +31,15 @@ const HFrame = ({
   const vbWidth = 400;
   const vbHeight = 400;
 
-  useEffect(() => {
-    const aWidth = svgRef.current.clientWidth;
-    const aHeight = svgRef.current.clientHeight;
+  function updateFigures(aWidth, aHeight) {
+    const pixelsPerPointsH = aWidth / vbWidth;
+    const pixelsPerPointsV = aHeight / vbHeight;
 
-    const wRatio = aWidth / vbWidth;
-    const hRatio = aHeight / vbHeight;
+    const wRatio = pixelsPerPointsH;
+    const hRatio = pixelsPerPointsV;
+
+    const borderOffsetHorizontal = (borderOffset + 1) / pixelsPerPointsH;
+    const borderOffsetVertical = (borderOffset + 1) / pixelsPerPointsV;
 
     const [atlSizeW, atlSizeH] = [topLeftSizeHorizontal / wRatio, topLeftSizeVertical / hRatio];
     const [atrSizeW, atrSizeH] = [topRightSizeHorizontal / wRatio, topRightSizeVertical / hRatio];
@@ -60,16 +66,16 @@ const HFrame = ({
         fill: "#2184A3",
         fillOpacity: 0.09,
         points: [
-          [borderOffset + atlSizeW, borderOffset],
-          [vbWidth - borderOffset - atrSizeW, borderOffset],
-          [vbWidth - borderOffset, borderOffset + atrSizeH],
-          [vbWidth - borderOffset, vbHeight - borderOffset - abrSizeH],
-          [vbWidth - borderOffset - abrSizeW, vbHeight - borderOffset],
-          [borderOffset + ablSizeW, vbHeight - borderOffset],
-          [borderOffset, vbHeight - borderOffset - ablSizeH],
-          [borderOffset, borderOffset + atlSizeH],
-          [borderOffset + atlSizeW, borderOffset],
-          [borderOffset + atlSizeW + strokeWidth, borderOffset],  // Overflow to avoid cut edges
+          [borderOffsetHorizontal + atlSizeW, borderOffsetVertical],
+          [vbWidth - borderOffsetHorizontal - atrSizeW, borderOffsetVertical],
+          [vbWidth - borderOffsetHorizontal, borderOffsetVertical + atrSizeH],
+          [vbWidth - borderOffsetHorizontal, vbHeight - borderOffsetVertical - abrSizeH],
+          [vbWidth - borderOffsetHorizontal - abrSizeW, vbHeight - borderOffsetVertical],
+          [borderOffsetHorizontal + ablSizeW, vbHeight - borderOffsetVertical],
+          [borderOffsetHorizontal, vbHeight - borderOffsetVertical - ablSizeH],
+          [borderOffsetHorizontal, borderOffsetVertical + atlSizeH],
+          [borderOffsetHorizontal + atlSizeW, borderOffsetVertical],
+          [borderOffsetHorizontal + atlSizeW + strokeWidth, borderOffsetVertical],  // Overflow to avoid cut edges
         ],
       },
       {
@@ -78,9 +84,9 @@ const HFrame = ({
         strokeWidth: strokeWidth,
         fill: "#FF0440",
         points: [
-          [borderOffset, borderOffset],
-          [borderOffset + atlSizeW - normInterlinearHor - normInterlinearHor - normThinWidthHor, borderOffset],
-          [borderOffset, borderOffset + atlSizeH - 2 * normInterlinearVer - normThinWidthVer],
+          [borderOffsetHorizontal, borderOffsetVertical],
+          [borderOffsetHorizontal + atlSizeW - normInterlinearHor - normInterlinearHor - normThinWidthHor, borderOffsetVertical],
+          [borderOffsetHorizontal, borderOffsetVertical + atlSizeH - 2 * normInterlinearVer - normThinWidthVer],
         ],
       },
       {
@@ -89,10 +95,10 @@ const HFrame = ({
         strokeWidth: strokeWidth,
         fill: "#FF0440",
         points: [
-          [borderOffset + atlSizeW - normInterlinearHor - normThinWidthHor, borderOffset],
-          [borderOffset + atlSizeW - normInterlinearHor, borderOffset],
-          [borderOffset, borderOffset + atlSizeH - normInterlinearVer],
-          [borderOffset, borderOffset + atlSizeH - normInterlinearVer - normThinWidthVer],
+          [borderOffsetHorizontal + atlSizeW - normInterlinearHor - normThinWidthHor, borderOffsetVertical],
+          [borderOffsetHorizontal + atlSizeW - normInterlinearHor, borderOffsetVertical],
+          [borderOffsetHorizontal, borderOffsetVertical + atlSizeH - normInterlinearVer],
+          [borderOffsetHorizontal, borderOffsetVertical + atlSizeH - normInterlinearVer - normThinWidthVer],
         ]
       },
       {
@@ -102,10 +108,10 @@ const HFrame = ({
         strokeWidth: strokeWidth * 2.5,
         fill: "none",
         points: [
-          [vbWidth - borderOffset - atrSizeW - 50, borderOffset],
-          [vbWidth - borderOffset - atrSizeW, borderOffset],
-          [vbWidth - borderOffset, borderOffset + atrSizeH],
-          [vbWidth - borderOffset, borderOffset + atrSizeH + 60],
+          [vbWidth - borderOffsetHorizontal - atrSizeW - 50, borderOffsetVertical],
+          [vbWidth - borderOffsetHorizontal - atrSizeW, borderOffsetVertical],
+          [vbWidth - borderOffsetHorizontal, borderOffsetVertical + atrSizeH],
+          [vbWidth - borderOffsetHorizontal, borderOffsetVertical + atrSizeH + 60],
         ],
       },
       {
@@ -115,10 +121,10 @@ const HFrame = ({
         strokeWidth: strokeWidth * 2.5,
         fill: "none",
         points: [
-          [borderOffset + ablSizeW + 50, vbHeight - borderOffset],
-          [borderOffset + ablSizeW, vbHeight - borderOffset],
-          [borderOffset, vbHeight - borderOffset - ablSizeH],
-          [borderOffset, vbHeight - borderOffset - ablSizeH - 60],
+          [borderOffsetHorizontal + ablSizeW + 50, vbHeight - borderOffsetVertical],
+          [borderOffsetHorizontal + ablSizeW, vbHeight - borderOffsetVertical],
+          [borderOffsetHorizontal, vbHeight - borderOffsetVertical - ablSizeH],
+          [borderOffsetHorizontal, vbHeight - borderOffsetVertical - ablSizeH - 60],
         ],
       },
       ...(stripes.map((idx) => ({
@@ -127,14 +133,19 @@ const HFrame = ({
         strokeWidth: strokeWidth,
         fill: idx === 0 ? "#FF0440" : "#2AB8AF",
         points: [
-          [vbWidth - borderOffset - abrSizeW + (idx)*adderHor + adderHor*stripesThinnes, vbHeight - borderOffset],
-          [vbWidth - borderOffset - abrSizeW + (idx + 1)*adderHor, vbHeight - borderOffset],
-          [vbWidth - borderOffset, vbHeight - borderOffset - abrSizeH + (idx + 1)*adderVer],
-          [vbWidth - borderOffset, vbHeight - borderOffset - abrSizeH + (idx)*adderVer + adderVer*stripesThinnes],
+          [vbWidth - borderOffsetHorizontal - abrSizeW + (idx) * adderHor + adderHor * stripesThinnes, vbHeight - borderOffsetVertical],
+          [vbWidth - borderOffsetHorizontal - abrSizeW + (idx + 1) * adderHor, vbHeight - borderOffsetVertical],
+          [vbWidth - borderOffsetHorizontal, vbHeight - borderOffsetVertical - abrSizeH + (idx + 1) * adderVer],
+          [vbWidth - borderOffsetHorizontal, vbHeight - borderOffsetVertical - abrSizeH + (idx) * adderVer + adderVer * stripesThinnes],
         ],
       }))),
     ]);
-  }, []);
+  }
+
+  useEffect(() => {setTimeout(() => {
+    const rect = svgRef.current.getBoundingClientRect();
+    updateFigures(rect.width, rect.height);
+  }, 10)}, []);
 
   useEffect(() => {
     setFiguresStr(figures.map((figure) => ({
@@ -180,9 +191,42 @@ const HFrame = ({
         })}
       </svg>
       <div className={s.contentWrapper}>
-        <div className={s.frameHeader}>Header</div>
-        <div className={s.frameContent}>Content</div>
-        <div className={s.frameFooter}>Footer</div>
+        <div
+          className={s.frameHeader}
+          style={{
+            marginLeft: `${topLeftSizeHorizontal + 4}px`,
+            marginTop: `${2 * borderOffset}px`,
+            marginRight: `${topRightSizeHorizontal + 5}px`,
+
+            maxHeight: `${topLeftSizeVertical - borderOffset}px`,
+            height: `${topLeftSizeVertical - borderOffset}px`,
+
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {header}
+        </div>
+        <div
+          className={s.frameContent}
+          style={{
+            marginLeft: `${3 * borderOffset}px`,
+            marginRight: `${3 * borderOffset}px`
+          }}
+        >
+          {content}
+        </div>
+        <div
+          className={s.frameFooter}
+          style={{
+            marginLeft: `${2 * borderOffset + bottomLeftSizeHorizontal}px`,
+            marginRight: `${2 * borderOffset + bottomRightSizeHorizontal}px`,
+            marginBottom: `${3 * borderOffset}px`,
+            height: `${bottomLeftSizeVertical}px`,
+          }}
+        >
+          {footer}
+        </div>
       </div>
     </div>
   );
