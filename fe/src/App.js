@@ -10,6 +10,7 @@ import PersistLogin from "./components/AdminComponents/PersistLogin/PersistLogin
 import RequireAuth from "./components/AdminComponents/RequireAuth/RequireAuth";
 import DashboardFrame from "./components/AdminComponents/DashboardFrame/DashboardFrame";
 import PageSelector from "./pages/PageSelector/PageSelector";
+import SandboxPage from "./pages/SandboxPage/SandboxPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
 
           {/*Public pages*/}
           <Route path="hipnos/" element={<MainPage/>}/>
+          <Route path="sandbox/" element={<SandboxPage/>}/>
           <Route path="memories/:memoryId" element={<MemoriesPage/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>

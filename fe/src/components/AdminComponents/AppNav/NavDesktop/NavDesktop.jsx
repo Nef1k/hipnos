@@ -1,8 +1,8 @@
 import {
   Avatar,
   Box,
-  Button, ButtonGroup,
-  IconButton, Menu, MenuItem,
+  Button, ButtonGroup, Divider,
+  IconButton, Link, Menu, MenuItem,
   Toolbar,
   Tooltip,
   Typography
@@ -97,6 +97,13 @@ const NavDesktop = ({sx, pages, selectedPageId, onLogout, onPageChange, onAddPag
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
+          <MenuItem component="a" href="/hipnos">
+            <Typography>Перейти в ГИПНОС</Typography>
+          </MenuItem>
+          <MenuItem component="a" href="/sandbox">
+            <Typography>Перейти в Песочницу</Typography>
+          </MenuItem>
+          <Divider />
           <MenuItem onClick={onLogout}>
             <Typography>Выйти</Typography>
           </MenuItem>
