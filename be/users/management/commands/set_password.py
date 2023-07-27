@@ -13,7 +13,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         username = options['username']
-        user = User.objects.get(username=username)
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            print(f'User "{username}" does not exists')
+            return
 
         new_password = getpass(f'Enter password for user {user.username}: ')
         repeated_password = getpass('Enter new password again: ')

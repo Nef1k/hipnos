@@ -1,5 +1,8 @@
 SHELL := /bin/bash
 
+include be/env/.env
+export
+
 project_name = hipnos
 certificate_name = $(project_name)_certificate
 domain_name = $(project_name).local
@@ -8,11 +11,21 @@ certs_root = ./data/nginx/certs
 cert_key_path = $(certs_root)/private.key
 cert_path = $(certs_root)/certificate.crt
 
+
+install_be_deps:
+	./be/manage.py migrate
+
+reset_all:
+	./be/manage.py reset_all
+
+set_password:
+	./be/manage.py set_password $(username)
+
 install_distros:
 	apt install -y ca-certificates libnss3-tools
 
 set_local_hosts:
-	echo "127.0.0.1 $(domain_name).local">>/etc/hosts
+	echo "127.0.0.1 $(domain_name)">>/etc/hosts
 
 generate_certs:
 	echo "Generating certificates"
