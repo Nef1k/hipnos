@@ -11,6 +11,7 @@
 }
 
 .contentWrapper {
+    margin-top: 32px;
     display: flex;
     height: 100%;
 }

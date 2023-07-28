@@ -17,7 +17,7 @@ const HFrame = ({
   bottomLeftSizeHorizontal = 30, bottomLeftSizeVertical = 30,
 
   topRightInterlinearSpace = 7,
-  thinBarWidth = 0.5,
+  thinBarWidth = 4,
 
   stripesCount = 3,
   stripesMaxOffset = 75,

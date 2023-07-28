@@ -1,0 +1,10 @@
+<svg width="170" height="168" viewBox="0 0 170 168" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 23V0.5H45.5L48 3H88L90 4H4.5V27.5L2 23Z" fill="#23B6BF" stroke="#23B6BF"/>
+    <path d="M168 145L168 167.5L124.5 167.5L122 165L82 165L79.5 163.5L165.5 164L165.5 140.5L168 145Z" fill="#23B6BF"
+          stroke="#23B6BF"/>
+    <path d="M146.5 0.999999L169 1L169 44.5L166.5 47L166.5 87L165.5 89L165.5 3.5L142 3.5L146.5 0.999999Z" fill="#23B6BF"
+          stroke="#23B6BF"/>
+    <path d="M23.5 167L1 167L1.00001 123.5L3.50001 121L3.50001 81L4.50001 79L4.5 164.5L28 164.5L23.5 167Z"
+          fill="#23B6BF" stroke="#23B6BF"/>
+    <path d="M164.5 4H5V163.5H164.5V4Z" stroke="#23B6BF"/>
+</svg>

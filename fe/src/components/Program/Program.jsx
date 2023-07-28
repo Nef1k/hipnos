@@ -20,7 +20,6 @@ const Program = ({currentProgram, onPhraseSubmit}) => {
 
   return (
     <div className={s.programWrapper}>
-      <h3>Активна подпрограмма "{currentProgram?.title}"</h3>
       <div className={s.contentWrapper}>
         <div className={s.wordsGraphWrapper}>
           <div className={s.graphWrapper}>

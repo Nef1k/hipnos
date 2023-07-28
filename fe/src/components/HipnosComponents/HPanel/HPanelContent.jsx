@@ -1,6 +1,6 @@
-const HPanelContent = ({children}) => {
+const HPanelContent = ({children, style}) => {
   return (
-    <>{children}</>
+    <div style={style}>{children}</div>
   )
 }
 

@@ -28,7 +28,6 @@ const Memories = ({items, onMemoryClick, onBlockedClick}) => {
 
   return (
     <div className={s.memoriesWrapper}>
-      <h3>Доступные воспоминания</h3>
       <div className={s.memoriesContainer}>
         {items.map((item, idx) => {
           return (

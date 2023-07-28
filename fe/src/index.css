@@ -3,6 +3,11 @@
   src: url('../public/fonts/Pangolin.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: "SciFi_RUS";
+  src: url("../public/fonts/SciFiRUS.otf") format('opentype');
+}
+
 body {
   margin: 0;
   font-family: "Pangolin", apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

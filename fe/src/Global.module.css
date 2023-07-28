@@ -28,18 +28,20 @@
 .w11{ width: 91.67%; }
 .w12{ width: 100.00%; }
 
-.h1{ height: 8vh; }
-.h2{ height: 17vh; }
-.h3{ height: 25vh; }
-.h4{ height: 33vh; }
-.h5{ height: 42vh; }
-.h6{ height: 50vh; }
-.h7{ height: 58vh; }
-.h8{ height: 67vh; }
-.h9{ height: 75vh; }
-.h10{ height: 83vh; }
-.h11{ height: 92vh; }
-.h12{ height: 100vh; }
+.h1{ height: 8%; }
+.h2{ height: 17%; }
+.h3{ height: 25%; }
+.h4{ height: 33%; }
+.h5{ height: 42%; }
+.h6{ height: 50%; }
+.h7{ height: 58%; }
+.h8{ height: 67%; }
+.h9{ height: 75%; }
+.h10{ height: 83%; }
+.h11{ height: 92%; }
+.h12{ height: 100%; }
+
+.fullHeight{ height: 100vh; }
 
 .bgRed { background-color: darkred; }
 .bgGreen { background-color: darkgreen; }

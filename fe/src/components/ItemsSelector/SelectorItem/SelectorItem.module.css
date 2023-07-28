@@ -1,12 +1,12 @@
 .itemWrapper {
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 0px;
 
     background-image: url("../../../../public/images/border.png");
     background-repeat: no-repeat;
-    background-position-x: 10px;
-    background-position-y: 10px;
+    background-position-x: 0px;
+    background-position-y: 0px;
 }
 
 .activeWrapper {
@@ -21,6 +21,6 @@
 }
 
 .itemTitle {
-
+    margin-right: 25px;
 }
 

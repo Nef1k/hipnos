@@ -11,7 +11,7 @@
 
 @keyframes appear {
     0% {
-        transform: translateX(-1000%);
+        transform: translateX(-200%);
     }
     100% {
         transform: translateX(0%);
