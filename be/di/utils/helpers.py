@@ -5,6 +5,14 @@ from typing import List
 from typing import TypeVar
 
 
+class classproperty(object):  # noqa
+    def __init__(self, f):
+        self.f = f
+
+    def __get__(self, obj, owner):
+        return self.f(owner)
+
+
 def build_args_string(*args, **kwargs):
     args_str = ', '.join((str(arg for arg in args)))
     kwargs_str = ', '.join((

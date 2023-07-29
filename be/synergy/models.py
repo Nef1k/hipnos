@@ -15,10 +15,21 @@ class SynergyPage(models.Model):
         db_table = 'synergy_page'
 
 
+class TabType(models.Model):
+    name = models.CharField(max_length=255, null=False, unique=True)
+    display_name = models.CharField(max_length=255, null=False, default='')
+
+    fields = models.JSONField(null=False, default=dict)
+
+    class Meta:
+        db_table = 'synergy_tab_type'
+
+
 class SynergyTab(models.Model):
     display_name = models.CharField(max_length=255, null=False, default='Виджет')
 
     page = models.ForeignKey(SynergyPage, null=False, on_delete=models.CASCADE)
+    tab_type = models.ForeignKey(TabType, null=True, on_delete=models.SET_NULL)
 
     widget_args = models.JSONField(null=False, default=dict)
 

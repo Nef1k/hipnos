@@ -3,6 +3,7 @@ from dependency_injector import providers
 from django.conf import settings
 
 from di.services.files import FilesService
+from di.services.intro import IntroService
 from di.services.markdown import MarkdownService
 from di.services.qr import QRService
 from di.services.service_container import ServiceContainerService
@@ -18,11 +19,16 @@ from hipnos.services.program import ProgramSubsystem
 from hipnos.services.reset import ResetService
 from notifications.services.notifications import NotificationSubsystem
 from synergy.services.pages import PageService
+from tabs.services.tabs import TabSubsystem
 from users.services.users import UserSubsystem
 
 
 class Container(containers.DeclarativeContainer):
     config = settings
+
+    intro_service: IntroService = providers.Singleton(
+        IntroService,
+    )
 
     qr_service: QRService = providers.Factory(
         QRService,
@@ -76,6 +82,11 @@ class Container(containers.DeclarativeContainer):
 
     page_service: PageService = providers.Factory(
         PageService,
+    )
+
+    tab_subsystem: TabSubsystem = providers.Factory(
+        TabSubsystem,
+        intro_service,
     )
 
     memory_service: MemoryService = providers.Factory(
