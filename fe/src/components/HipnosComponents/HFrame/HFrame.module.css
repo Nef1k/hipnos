@@ -1,6 +1,6 @@
 .frameWrapper {
     display: flex;
-    color: #23B6BF;
+    color: #2AB8AF;
     min-width: 100px;
     height: 100%;
     min-height: 150px;
@@ -21,16 +21,25 @@
 }
 
 .frameHeader {
+    /*background-color: rgba(255, 255, 0, 0.4);*/
     /*position: relative;*/
 }
 
 .frameContent {
+    /*background-color: rgba(255, 0, 0, 0.4);*/
+
     /*position: relative;*/
     flex: 1;
     overflow: auto;
 }
 
+.frameContentFullSize {
+    /*background-color: rgba(255, 0, 255, 0.4);*/
+    flex: 1;
+}
+
 .frameFooter {
+    /*background-color: rgba(0, 0, 255, 0.4);*/
     /*position: relative;*/
 }
 

@@ -30,9 +30,6 @@ const SandboxPage = () => {
           </div>
         </HPanelHeader>
         <HPanelContent style={{height: "100%", display: "grid", gridTemplateColumns: "1fr", gridGap: "20px"}}>
-          {/*<HFramedButton caption="Фантас"><HIconLockClosed /></HFramedButton>*/}
-          {/*<HFramedButton caption="Фобетор"><HIconLockClosed /></HFramedButton>*/}
-          {/*<HFramedButton caption="Хуй моржовый"><HIconLockClosed /></HFramedButton>*/}
           {buttons.map(({caption, content, disabled, selected}) => (
             <HFramedButton disabled={disabled} selected={selected} caption={caption}>{content}</HFramedButton>
           ))}

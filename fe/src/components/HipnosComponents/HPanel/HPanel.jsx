@@ -4,7 +4,18 @@ import {useEffect, useState} from "react";
 import HPanelContent from "./HPanelContent";
 import HPanelFooter from "./HPanelFooter";
 
-const HPanel = ({children, style, className}) => {
+const HPanel = ({
+  children,
+  style,
+  className,
+  outstanding,
+  fullSize,
+
+  topLeftSizeHorizontal = 60, topLeftSizeVertical = 60,
+
+  topRightInterlinearSpace = 11,
+  thinBarWidth = 6,
+}) => {
   const [headerElements, setHeaderElements] = useState([]);
   const [contentElements, setContentElements] = useState([]);
   const [footerElements, setFooterElements] = useState([]);
@@ -28,6 +39,14 @@ const HPanel = ({children, style, className}) => {
         header={headerElements}
         content={contentElements}
         footer={footerElements}
+        outstanding={outstanding}
+        fullSize={fullSize}
+
+        topLeftSizeHorizontal={topLeftSizeHorizontal}
+        topLeftSizeVertical={topLeftSizeVertical}
+
+        topRightInterlinearSpace={topRightInterlinearSpace}
+        thinBarWidth={thinBarWidth}
       />
     </div>
   );

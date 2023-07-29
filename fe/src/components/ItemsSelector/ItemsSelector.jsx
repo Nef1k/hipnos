@@ -1,12 +1,14 @@
 import s from './ItemsSelector.module.css';
 import SelectorItem from "./SelectorItem/SelectorItem";
 import {useEffect, useState} from "react";
+import {HIconEyeClosed, HIconEyeOpen, HIconLockClosed} from "../HipnosComponents/HIcons/HIcons";
 
 const ItemsSelector = ({items, initialActiveIdx, onActiveChange}) => {
+  const itemWidth = 70;
   const stateImageUrls = {
-    [ItemState.Finished]: "/images/eye_open_no_border.png",
-    [ItemState.InProgress]: "/images/eye_closed_no_border.png",
-    [ItemState.Locked]: "/images/blocked_no_border.png",
+    [ItemState.Finished]: <HIconEyeOpen width={itemWidth} />,
+    [ItemState.InProgress]: <HIconEyeClosed width={itemWidth} />,
+    [ItemState.Locked]: <HIconLockClosed width={itemWidth} />,
   }
 
   const getItemState = (item) => {
@@ -31,9 +33,10 @@ const ItemsSelector = ({items, initialActiveIdx, onActiveChange}) => {
           <div className={s.itemWrapper} onClick={(e) => onItemClick(e, idx)}>
             <SelectorItem
               key={idx}
-              isActive={idx === activeIdx}
+              active={idx === activeIdx}
               title={item.title}
-              imgUrl={stateImageUrls[getItemState(item)]}
+              disabled={getItemState(item) === ItemState.Locked}
+              icon={stateImageUrls[getItemState(item)]}
             />
           </div>
         );

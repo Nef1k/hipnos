@@ -105,15 +105,23 @@ const MainPage = () => {
   return (
     <div className={`${gs.grid} ${s.pageWrapper} ${gs.fullHeight}`} style={{padding: "10px"}}>
       <div className={`${gs.row} ${gs.h7} ${s.firstRow}`}>
-        <HPanel className={`${gs.cell} ${gs.w10} ${s.hipnosCodeWrapper}`}>
+        <HPanel
+          className={`${gs.cell} ${gs.w10} ${s.hipnosCodeWrapper}`}
+          outstanding
+          fullSize
+          topLeftSizeHorizontal={100}
+          topLeftSizeVertical={100}
+          topRightInterlinearSpace={15}
+          thinBarWidth={10}
+        >
           <HPanelHeader style={{height: "100%", width: "100%"}}></HPanelHeader>
-          <HPanelContent style={{overflow: "hidden", width: "100%", height: "100%"}}>
+          <HPanelContent style={{overflow: "hidden", width: "100%", height: "100%", marginTop: "40px"}}>
             <HipnosCode/>
           </HPanelContent>
         </HPanel>
-        <HPanel className={`${gs.cell} ${gs.w2}`} style={{paddingLeft: "10px"}}>
+        <HPanel className={`${gs.cell} ${gs.w2}`} style={{paddingLeft: "10px"}} fullSize>
           <HPanelHeader></HPanelHeader>
-          <HPanelContent>
+          <HPanelContent style={{height: "100%"}}>
             <ItemsSelector
               items={programItems}
               onActiveChange={(e, idx, newProgram) => setActiveProgramIdx(idx)}
@@ -123,7 +131,7 @@ const MainPage = () => {
       </div>
       <div className={`${gs.row} ${gs.h5}`} style={{paddingTop: "10px"}}>
           <HPanel className={`${gs.cell} ${gs.w5} ${s.memoriesWrapper}`}>
-            <HPanelHeader><h2>Доступные воспоминания</h2></HPanelHeader>
+            {/*<HPanelHeader><h2>Доступные воспоминания</h2></HPanelHeader>*/}
             <HPanelContent style={{height: "100%"}}>
               <Memories
                 items={memories}
@@ -133,9 +141,9 @@ const MainPage = () => {
             </HPanelContent>
           </HPanel>
           <HPanel className={`${gs.cell} ${gs.w7}`} style={{paddingLeft: "10px"}}>
-            <HPanelHeader>
-              <h2>Активна подпрограмма "{programItems[activeProgramIdx]?.title}"</h2>
-            </HPanelHeader>
+            {/*<HPanelHeader>*/}
+            {/*  <h2>Активна подпрограмма "{programItems[activeProgramIdx]?.title}"</h2>*/}
+            {/*</HPanelHeader>*/}
             <HPanelContent>
               <Program
                 currentProgram={programItems[activeProgramIdx]}

@@ -3,12 +3,15 @@ import {useEffect, useRef, useState} from "react";
 
 const HFrame = ({
   style,
+  outstanding,
 
   header,
   content,
   footer,
 
-  strokeWidth = 2,
+  fullSize,
+
+  strokeWidth = 3,
   borderOffset = strokeWidth,
 
   topLeftSizeHorizontal = 50, topLeftSizeVertical = 50,
@@ -58,7 +61,64 @@ const HFrame = ({
     const adderHor = (abrSizeW * stripesMaxOffset) * horFrac / 10000;
     const adderVer = (abrSizeH * stripesMaxOffset) * horFrac / 10000;
 
+    const sideLinesTopOffset = 26;  // % height offset of side lines
+    const sideLinesHeight = 15;  // % height of side lines
+    const sideLinesCount = 3;  // Number of side lines on each side
+    const sideLinesBaseWidth = 5;  // % width of the first line
+    const sideLinesWidthInc = 5; // % width of width increment for next line
+
+    const bottomLinesOffset = 17;
+    const bottomLinesHeight = 6.5;
+    const bottomLinesCount = 2;
+    const bottomLinesBaseWidth = 40;
+    const bottomLinesDec = 11;
+
+    const sideLines = [...Array(sideLinesCount).keys()];
+    const slOffsetVertical = vbHeight * (sideLinesTopOffset / 100);
+    const slHeight = vbHeight * (sideLinesHeight / 100);
+    const slIntervalVertical = slHeight / (sideLinesCount - 1);
+    const slBaseWidth = vbWidth * (sideLinesBaseWidth / 100);
+    const slWidthIncrement = vbWidth * (sideLinesWidthInc / 100);
+
+    const bottomLines = [...Array(bottomLinesCount).keys()];
+    const blOffsetVertical = vbHeight * (1 - bottomLinesOffset / 100);
+    const blHeight = vbHeight * (bottomLinesHeight / 100);
+    const blIntervalVertical = blHeight / (bottomLinesCount - 1);
+    const blBaseWidth = vbWidth * (bottomLinesBaseWidth / 100);
+    const blWidthDec = vbWidth * (bottomLinesDec / 100);
+    const vbCenterHorizontal = vbWidth / 2;
+
     setFigures([
+      ...bottomLines.map((idx) => (outstanding && {
+        description: "Outstanding lines bottom",
+        stroke: "#FF0440",
+        strokeWidth: strokeWidth * 3.5,
+        fill: "none",
+        points: [
+          [vbCenterHorizontal - (blBaseWidth - idx * blWidthDec) / 2, blOffsetVertical + idx * blIntervalVertical],
+          [vbCenterHorizontal + (blBaseWidth - idx * blWidthDec) / 2, blOffsetVertical + idx * blIntervalVertical],
+        ],
+      })),
+      ...sideLines.map((idx) => (outstanding && {
+        description: "Outstanding lines left",
+        stroke: "#FF0440",
+        strokeWidth: strokeWidth * 3.5,
+        fill: "none",
+        points: [
+          [borderOffsetHorizontal, slOffsetVertical + idx * slIntervalVertical],
+          [borderOffsetHorizontal + slBaseWidth + idx * slWidthIncrement, slOffsetVertical + idx * slIntervalVertical]
+        ],
+      })),
+      ...sideLines.map((idx) => (outstanding && {
+        description: "Outstanding lines right",
+        stroke: "#FF0440",
+        strokeWidth: strokeWidth * 3,
+        fill: "none",
+        points: [
+          [vbWidth - borderOffsetHorizontal, slOffsetVertical + idx * slIntervalVertical],
+          [vbWidth - borderOffsetHorizontal - slBaseWidth - idx * slWidthIncrement, slOffsetVertical + idx * slIntervalVertical]
+        ],
+      })),
       {
         description: "Main border",
         stroke: "#2AB8AF",
@@ -142,15 +202,17 @@ const HFrame = ({
     ]);
   }
 
-  useEffect(() => {setTimeout(() => {
-    const rect = svgRef.current.getBoundingClientRect();
-    updateFigures(rect.width, rect.height);
-  }, 10)}, []);
+  useEffect(() => {
+    setTimeout(() => {
+      const rect = svgRef.current.getBoundingClientRect();
+      updateFigures(rect.width, rect.height);
+    }, 10)
+  }, []);
 
   useEffect(() => {
     setFiguresStr(figures.map((figure) => ({
       ...figure,
-      points: figure.points.join(" "),
+      points: figure?.points?.join(" "),
     })));
   }, [figures]);
 
@@ -167,6 +229,7 @@ const HFrame = ({
         className={s.svgElement}
       >
         {figuresStr.map((figure, idx) => {
+          if (!figure) return null;
           return ((!figure.isLine) || false ?
               <polygon
                 key={idx}
@@ -191,42 +254,48 @@ const HFrame = ({
         })}
       </svg>
       <div className={s.contentWrapper}>
-        <div
-          className={s.frameHeader}
-          style={{
-            marginLeft: `${topLeftSizeHorizontal + 4}px`,
-            marginTop: `${2 * borderOffset}px`,
-            marginRight: `${topRightSizeHorizontal + 5}px`,
+        {!fullSize ? <>
+          <div
+            className={s.frameHeader}
+            style={{
+              marginLeft: `${topLeftSizeHorizontal + 4}px`,
+              marginTop: `${2 * borderOffset}px`,
+              marginRight: `${topRightSizeHorizontal + 5}px`,
 
-            maxHeight: `${topLeftSizeVertical - borderOffset}px`,
-            height: `${topLeftSizeVertical - borderOffset}px`,
+              maxHeight: `${topLeftSizeVertical - borderOffset}px`,
+              height: `${topLeftSizeVertical - borderOffset}px`,
 
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          {header}
-        </div>
-        <div
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {header}
+          </div>
+          <div
           className={s.frameContent}
           style={{
-            marginLeft: `${3 * borderOffset}px`,
-            marginRight: `${3 * borderOffset}px`
-          }}
-        >
-          {content}
-        </div>
-        <div
+          marginLeft: `${3 * borderOffset}px`,
+          marginRight: `${3 * borderOffset}px`
+        }}
+          >
+            {content}
+          </div>
+          <div
           className={s.frameFooter}
           style={{
-            marginLeft: `${2 * borderOffset + bottomLeftSizeHorizontal}px`,
-            marginRight: `${2 * borderOffset + bottomRightSizeHorizontal}px`,
-            marginBottom: `${3 * borderOffset}px`,
-            height: `${bottomLeftSizeVertical}px`,
-          }}
-        >
-          {footer}
-        </div>
+          marginLeft: `${2 * borderOffset + bottomLeftSizeHorizontal}px`,
+          marginRight: `${2 * borderOffset + bottomRightSizeHorizontal}px`,
+          marginBottom: `${3 * borderOffset}px`,
+          height: `${bottomLeftSizeVertical}px`,
+        }}
+          >
+            {footer}
+          </div>
+        </> : <>
+          <div className={s.frameContentFullSize}>
+            {content}
+          </div>
+        </>}
       </div>
     </div>
   );
