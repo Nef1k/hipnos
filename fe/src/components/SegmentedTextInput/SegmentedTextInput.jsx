@@ -1,5 +1,6 @@
 import s from './SegmentedTextInput.module.css';
 import React, {useRef} from "react";
+import HTextInput from "../HipnosComponents/HTextInput/HTextInput";
 
 const SegmentedTextInput = ({value, segmentsCount, segmentClassName, fieldWidth, disabled, onChange}) => {
 
@@ -12,7 +13,7 @@ const SegmentedTextInput = ({value, segmentsCount, segmentClassName, fieldWidth,
   const segmentRefs = useRef(segmentRawRefs);
 
   const focusSegment = (idx) => {
-    segmentRefs.current[idx].current.focus()
+    segmentRefs?.current[idx]?.current?.focus();
   }
 
   const onFocus = (e, segmentIdx) => {
@@ -67,12 +68,13 @@ const SegmentedTextInput = ({value, segmentsCount, segmentClassName, fieldWidth,
       {[...Array(segmentsCount)].map((_, idx) => {
         const safeSymbol = (idx >= 0) && (idx < value.length) ? textArray[idx] : '';
         return (
-          <input
+          <HTextInput
             key={idx}
             readOnly
-            ref={segmentRefs.current[idx]}
+            innerRef={segmentRefs.current[idx]}
             value={safeSymbol}
             className={`${s.baseSegment} ${segmentClassName}`}
+            wrapperClassName={s.baseSegmentWrapper}
             onKeyDown={(e) => {onKeyDown(e, idx)}}
             onFocus={(e) => {onFocus(e, idx)}}
           />

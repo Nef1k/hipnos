@@ -1,5 +1,6 @@
 import s from "./HFrame.module.css";
-import {useEffect, useRef, useState} from "react";
+import {useRef} from "react";
+import HSvg from "../HSvg/HSvg";
 
 const HFrame = ({
   style,
@@ -25,16 +26,25 @@ const HFrame = ({
   stripesCount = 3,
   stripesMaxOffset = 75,
   stripesThinnes = 0.8,
+
+  sideLinesTopOffset = 26,  // % height offset of side lines
+  sideLinesHeight = 15,  // % height of side lines
+  sideLinesCount = 3,  // Number of side lines on each side
+  sideLinesBaseWidth = 5,  // % width of the first line
+  sideLinesWidthInc = 5, // % width of width increment for next line
+
+  bottomLinesOffset = 17,
+  bottomLinesHeight = 6.5,
+  bottomLinesCount = 2,
+  bottomLinesBaseWidth = 40,
+  bottomLinesDec = 11,
 }) => {
   const svgRef = useRef(null);
-
-  const [figures, setFigures] = useState([]);
-  const [figuresStr, setFiguresStr] = useState([]);
 
   const vbWidth = 400;
   const vbHeight = 400;
 
-  function updateFigures(aWidth, aHeight) {
+  function updateFigures(aWidth, aHeight, setFigures) {
     const pixelsPerPointsH = aWidth / vbWidth;
     const pixelsPerPointsV = aHeight / vbHeight;
 
@@ -60,18 +70,6 @@ const HFrame = ({
     const horFrac = 11 + stripesMaxOffset / (stripesCount);
     const adderHor = (abrSizeW * stripesMaxOffset) * horFrac / 10000;
     const adderVer = (abrSizeH * stripesMaxOffset) * horFrac / 10000;
-
-    const sideLinesTopOffset = 26;  // % height offset of side lines
-    const sideLinesHeight = 15;  // % height of side lines
-    const sideLinesCount = 3;  // Number of side lines on each side
-    const sideLinesBaseWidth = 5;  // % width of the first line
-    const sideLinesWidthInc = 5; // % width of width increment for next line
-
-    const bottomLinesOffset = 17;
-    const bottomLinesHeight = 6.5;
-    const bottomLinesCount = 2;
-    const bottomLinesBaseWidth = 40;
-    const bottomLinesDec = 11;
 
     const sideLines = [...Array(sideLinesCount).keys()];
     const slOffsetVertical = vbHeight * (sideLinesTopOffset / 100);
@@ -202,57 +200,14 @@ const HFrame = ({
     ]);
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      const rect = svgRef.current.getBoundingClientRect();
-      updateFigures(rect.width, rect.height);
-    }, 10)
-  }, []);
-
-  useEffect(() => {
-    setFiguresStr(figures.map((figure) => ({
-      ...figure,
-      points: figure?.points?.join(" "),
-    })));
-  }, [figures]);
-
   return (
     <div style={style} className={s.frameWrapper}>
-      <svg
-        version="1.2"
-        xmlns="http://www.w3.org/2000/svg"
-        ref={svgRef}
-        width="100%"
-        height="100%"
-        preserveAspectRatio="none"
+      <HSvg
+        svgRef={svgRef}
         viewBox={`0 0 ${vbWidth} ${vbHeight}`}
         className={s.svgElement}
-      >
-        {figuresStr.map((figure, idx) => {
-          if (!figure) return null;
-          return ((!figure.isLine) || false ?
-              <polygon
-                key={idx}
-                points={figure.points}
-                fill={figure.fill}
-                fillOpacity={figure.fillOpacity || 1}
-                stroke={figure.stroke}
-                strokeWidth={`${figure.strokeWidth}px`}
-                vectorEffect="non-scaling-stroke"
-              />
-              :
-              <polyline
-                key={idx}
-                points={figure.points}
-                fill={figure.fill}
-                fillOpacity={figure.fillOpacity || 1}
-                stroke={figure.stroke}
-                strokeWidth={`${figure.strokeWidth}px`}
-                vectorEffect="non-scaling-stroke"
-              />
-          );
-        })}
-      </svg>
+        updateFigures={updateFigures}
+      />
       <div className={s.contentWrapper}>
         {!fullSize ? <>
           <div
@@ -272,22 +227,23 @@ const HFrame = ({
             {header}
           </div>
           <div
-          className={s.frameContent}
-          style={{
-          marginLeft: `${3 * borderOffset}px`,
-          marginRight: `${3 * borderOffset}px`
-        }}
+            className={s.frameContent}
+            style={{
+              marginLeft: `${3 * borderOffset}px`,
+              marginRight: `${3 * borderOffset}px`,
+              height: "100%",
+            }}
           >
             {content}
           </div>
           <div
-          className={s.frameFooter}
-          style={{
-          marginLeft: `${2 * borderOffset + bottomLeftSizeHorizontal}px`,
-          marginRight: `${2 * borderOffset + bottomRightSizeHorizontal}px`,
-          marginBottom: `${3 * borderOffset}px`,
-          height: `${bottomLeftSizeVertical}px`,
-        }}
+            className={s.frameFooter}
+            style={{
+              marginLeft: `${2 * borderOffset + bottomLeftSizeHorizontal}px`,
+              marginRight: `${2 * borderOffset + bottomRightSizeHorizontal}px`,
+              marginBottom: `${3 * borderOffset}px`,
+              height: `${bottomLeftSizeVertical}px`,
+            }}
           >
             {footer}
           </div>

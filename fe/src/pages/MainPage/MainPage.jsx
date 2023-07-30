@@ -115,7 +115,7 @@ const MainPage = () => {
           thinBarWidth={10}
         >
           <HPanelHeader style={{height: "100%", width: "100%"}}></HPanelHeader>
-          <HPanelContent style={{overflow: "hidden", width: "100%", height: "100%", marginTop: "40px"}}>
+          <HPanelContent style={{overflow: "hidden", width: "100%", height: "100%", marginTop: "80px"}}>
             <HipnosCode/>
           </HPanelContent>
         </HPanel>

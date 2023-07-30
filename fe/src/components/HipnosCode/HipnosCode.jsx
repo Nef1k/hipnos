@@ -12,8 +12,7 @@ const HipnosCode = () => {
 
   return (
     <div className={`${s.mainWrapper}`}>
-      {/*<h1>Г.И.П.Н.О.С</h1>*/}
-      <h1 style={{fontFamily: "SciFi_RUS"}}>П.О.Н.О.С</h1>
+      <h1 style={{fontFamily: "SciFi_RUS"}}>Г.И.П.Н.О.С</h1>
       <div className={`${s.codeInputWrapper}`}>
         <SegmentedTextInput
           value={text}

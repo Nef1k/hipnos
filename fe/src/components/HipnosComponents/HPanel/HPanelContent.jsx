@@ -1,6 +1,6 @@
 const HPanelContent = ({children, style}) => {
   return (
-    <div style={style}>{children}</div>
+    <div style={{...style, "overflow": "hidden"}}>{children}</div>
   )
 }
 

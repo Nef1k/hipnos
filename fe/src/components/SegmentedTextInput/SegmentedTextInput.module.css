@@ -3,14 +3,20 @@
     justify-content: space-between;
 }
 
+.baseSegmentWrapper {
+    flex: 0;
+}
+
 .baseSegment {
-    width: 120px;
-    font-size: 104pt;
+    width: 140px;
+    font-size: 72pt;
+    color: #FF0440 !important;
+    font-family: "Speedy", sans-serif !important;
     text-align: center;
     caret-color: transparent;
+    aspect-ratio: 1 / 1;
 }
 .baseSegment:focus {
-    box-shadow: 0 0 10px darkcyan;
-    border: 1px solid #000;
+    background-color: rgba(255, 0, 0, 0.4);
     outline: none;
 }

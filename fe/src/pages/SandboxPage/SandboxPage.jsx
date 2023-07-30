@@ -7,6 +7,8 @@ import HPanelFooter from "../../components/HipnosComponents/HPanel/HPanelFooter"
 import Clock from "../../components/Clock/Clock";
 import HFramedButton from "../../components/HipnosComponents/HFramedButton/HFramedButton";
 import {HIconEyeClosed, HIconEyeOpen, HIconLockClosed} from "../../components/HipnosComponents/HIcons/HIcons";
+import HInputFrame from "../../components/HipnosComponents/HInputFrame/HInputFrame";
+import HTextInput from "../../components/HipnosComponents/HTextInput/HTextInput";
 
 
 const btnWidth = 90;
@@ -20,7 +22,7 @@ const buttons = [
 const SandboxPage = () => {
   return (
     <div className={s.pageWrapper} style={{display: "flex", flexDirection: "column"}}>
-      <HPanel style={{}}>
+      <HPanel style={{display: "flex", overflow: "hidden"}}>
         <HPanelHeader>
           <div style={{display: "flex", height: "100%", width: "100%", alignItems: "end"}}>
             <h2 style={{display: "block", flex: 1, margin: 0}}>HIPNOS</h2>
@@ -29,10 +31,11 @@ const SandboxPage = () => {
             </div>
           </div>
         </HPanelHeader>
-        <HPanelContent style={{height: "100%", display: "grid", gridTemplateColumns: "1fr", gridGap: "20px"}}>
-          {buttons.map(({caption, content, disabled, selected}) => (
-            <HFramedButton disabled={disabled} selected={selected} caption={caption}>{content}</HFramedButton>
-          ))}
+        <HPanelContent style={{height: "200px", display: "flex", alignItems: "center", justifyContent: "center"}}>
+          <HTextInput
+            style={{width: "80px"}}
+            placeholder="Код"
+          />
         </HPanelContent>
         <HPanelFooter>
           <div style={{display: "flex", alignItems: "center", height: "100%", padding: "10px"}}>

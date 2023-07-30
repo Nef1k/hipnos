@@ -1,0 +1,11 @@
+.inputElement {
+    font-family: Verdana, sans-serif;
+    outline: none;
+
+    min-height: 30px;
+    padding: 12px 10px 10px;
+
+    background: none;
+    border: 0;
+    color: #2AB8AF;
+}

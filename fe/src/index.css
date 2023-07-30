@@ -1,11 +1,16 @@
 @font-face {
   font-family: "Pangolin";
-  src: url('../public/fonts/Pangolin.ttf') format('truetype');
+  src: url('../public/fonts/Pangolin.ttf') format("truetype");
 }
 
 @font-face {
   font-family: "SciFi_RUS";
-  src: url("../public/fonts/SciFiRUS.otf") format('opentype');
+  src: url("../public/fonts/SciFiRUS.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Speedy";
+  src: url("../public/fonts/SpeedyRegular.ttf") format("truetype");
 }
 
 body {
