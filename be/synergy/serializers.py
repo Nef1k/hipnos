@@ -3,20 +3,31 @@ from rest_framework import serializers
 from synergy.models import DefaultUserPage
 from synergy.models import SynergyPage
 from synergy.models import SynergyTab
+from synergy.models import TabType
 from users.serializers import UserInfoSerializer
+
+
+class TabTypeDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TabType
+        fields = '__all__'
 
 
 class TabDetailsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=False, required=False)
-    is_initialized = serializers.SerializerMethodField()
-
-    @staticmethod
-    def get_is_initialized(instance: SynergyTab):
-        return bool(instance.widget_args)
+    tab_type = TabTypeDetailsSerializer(many=False, read_only=True)
+    tab_type_id = serializers.PrimaryKeyRelatedField(
+        required=True,
+        write_only=True,
+        allow_null=False,
+        source='tab_type',
+        queryset=TabType.objects.all(),
+    )
 
     class Meta:
         model = SynergyTab
-        fields = ['id', 'display_name', 'widget_args', 'is_initialized']
+        fields = ['id', 'display_name', 'widget_state', 'tab_type',
+                  'tab_type_id']
 
 
 class SynergyPageListSerializer(serializers.ModelSerializer):

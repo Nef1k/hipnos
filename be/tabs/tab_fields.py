@@ -1,3 +1,5 @@
+from typing import Dict
+from typing import Iterable
 from typing import Optional
 
 from tabs.base import BaseField
@@ -53,6 +55,27 @@ class IntegerField(NamedField):
         prev.update({
             'type': 'integer',
             'required': self.required,
+        })
+        return prev
+
+
+class MultipleChoicesField(NamedField):
+    def __init__(
+            self, *,
+            choices: Dict[str, str],
+            required: Optional[bool] = False,
+            display_name: Optional[str] = '',
+    ):
+        super().__init__(display_name=display_name)
+        self.required = required
+        self.choices = choices
+
+    def to_json(self):
+        prev = super().to_json()
+        prev.update({
+            'type': 'choice_multiple',
+            'required': self.required,
+            'choices': self.choices,
         })
         return prev
 

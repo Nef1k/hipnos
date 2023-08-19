@@ -18,7 +18,6 @@ const DataDropdown = ({label, items, defaultValue, noValueText, getItemValue, ge
     }
 
     const value = !!getItemValue ? getItemValue(item) : _getDefaultItemValue(item);
-    console.log(value);
 
     return value;
   }
@@ -42,15 +41,13 @@ const DataDropdown = ({label, items, defaultValue, noValueText, getItemValue, ge
   }, [defaultValue]);
 
   return (
-    <FormControl>
+    <FormControl sx={style}>
       {!!label && <InputLabel>{label}</InputLabel>}
       <Select
         label={label}
+        fullWidth
         value={_getItemValue(currentValue) || ""}
-        style={{width: "300px"}}
         onChange={handleValueChange}
-        sx={style}
-        size="small"
       >
         <MenuItem value="">{noValueCaption}</MenuItem>
         {items.map((item) => {

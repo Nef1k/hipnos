@@ -27,11 +27,12 @@ class TabType(models.Model):
 
 class SynergyTab(models.Model):
     display_name = models.CharField(max_length=255, null=False, default='Виджет')
+    is_initialized = models.BooleanField(null=False, default=False)
 
     page = models.ForeignKey(SynergyPage, null=False, on_delete=models.CASCADE)
     tab_type = models.ForeignKey(TabType, null=True, on_delete=models.SET_NULL)
 
-    widget_args = models.JSONField(null=False, default=dict)
+    widget_state = models.JSONField(null=False, default=dict)
 
     class Meta:
         db_table = 'synergy_tab'

@@ -10,14 +10,14 @@ export const emptyLayout = () => ({
   }
 })
 
-const TabsPanel = forwardRef(({pageName, page, onLayoutSave, onTabsReload, onTabRemove}, ref) => {
+const TabsPanel = forwardRef(({pageName, page, tabTypes, onLayoutSave, onTabsReload, onTabRemove}, ref) => {
   const dockRef = useRef(null);
   const [layout, setLayout] = useState(emptyLayout());
   const [canSave, setCanSave] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
 
-  const bigRandom = () => Math.trunc(Math.random() * 1000000000)
+  const bigRandom = () => Math.trunc(Math.random() * 1000000000);
 
   const newWindow = (id) => {
     // const id = bigRandom().toString();
@@ -78,7 +78,7 @@ const TabsPanel = forwardRef(({pageName, page, onLayoutSave, onTabsReload, onTab
     return {
       "id": tabData.id.toString(),
       "title": tabInfo?.display_name,
-      "content": <TabRenderer tabInfo={tabInfo} />,
+      "content": <TabRenderer tabInfo={tabInfo} tabTypes={tabTypes} />,
       "closable": true,
     };
   }

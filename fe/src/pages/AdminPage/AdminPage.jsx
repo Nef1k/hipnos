@@ -6,6 +6,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const AdminPage = () => {
   const [pageData, setPageData] = useState(null);
   const [tabsRef] = useOutletContext();
+  const [tabTypes, setTabTypes] = useState([]);
 
   const {pageName} = useParams();
   const axiosPrivate = useAxiosPrivate();
@@ -32,6 +33,16 @@ const AdminPage = () => {
     }
   }
 
+  async function fetchTabTypes() {
+    try {
+      const response = await axiosPrivate.get(`synergy/tabs/types/`);
+      setTabTypes(response?.data);
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
   const handleTabsReload = async () => {
     fetchPage(pageName).catch();
   }
@@ -42,6 +53,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     fetchPage(pageName).catch();
+    fetchTabTypes().catch();
   }, [pageName]);
 
   return (
@@ -50,6 +62,7 @@ const AdminPage = () => {
         ref={tabsRef}
         pageName={pageName}
         page={pageData}
+        tabTypes={tabTypes}
         onTabsReload={handleTabsReload}
         onTabRemove={handleTabRemove}
       />
