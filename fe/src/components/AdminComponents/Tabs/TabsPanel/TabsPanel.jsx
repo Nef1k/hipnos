@@ -1,7 +1,7 @@
 import PanelsContainer from "../../PanelsContainer/PanelsContainer";
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
-import TabRenderer from "../TabDispatcher/TabDispatcher";
+import TabDispatcher from "../TabDispatcher/TabDispatcher";
 
 export const emptyLayout = () => ({
   dockbox: {
@@ -17,10 +17,7 @@ const TabsPanel = forwardRef(({pageName, page, tabTypes, onLayoutSave, onTabsRel
 
   const axiosPrivate = useAxiosPrivate();
 
-  const bigRandom = () => Math.trunc(Math.random() * 1000000000);
-
   const newWindow = (id) => {
-    // const id = bigRandom().toString();
     return {
       id,
       window: {
@@ -71,14 +68,20 @@ const TabsPanel = forwardRef(({pageName, page, tabTypes, onLayoutSave, onTabsRel
     return Boolean(tabs.length) ? tabs[0] : null
   }
 
+  function handleTabUpdate(tabInfo) {
+    console.log(`Update requested for tab: `, tabInfo);
+
+    // TODO: update only one tab that triggered update
+    onTabsReload && onTabsReload();
+  }
+
   const loadTab = (tabData) => {
     const tabInfo = getTabInfo(tabData.id);
-    // console.log(tabInfo);
 
     return {
       "id": tabData.id.toString(),
       "title": tabInfo?.display_name,
-      "content": <TabRenderer tabInfo={tabInfo} tabTypes={tabTypes} />,
+      "content": <TabDispatcher tabInfo={tabInfo} tabTypes={tabTypes} onUpdateRequired={handleTabUpdate} />,
       "closable": true,
     };
   }

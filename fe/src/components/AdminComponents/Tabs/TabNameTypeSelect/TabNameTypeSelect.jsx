@@ -1,18 +1,19 @@
-import {Box, Button, Input, TextField} from "@mui/material";
+import {Box, Button, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import DataDropdown from "../../../DataDropdown/DataDropdown";
 
-const TabNameTypeSelect = ({tabInfo, tabTypes}) => {
+const TabNameTypeSelect = ({tabInfo, tabTypes, onUpdateRequired}) => {
   const [widgetName, setWidgetName] = useState(tabInfo?.display_name);
   const [selectedType, setSelectedType] = useState(null);
   const [canSave, setCanSave] = useState(checkCanSave());
 
   const axiosPrivate = useAxiosPrivate();
 
-  async function saveTab(tabName, tabTypeId) {
+  async function saveTab(tabId, updateData) {
     try {
-      await axiosPrivate.put(``);
+      await axiosPrivate.patch(`synergy/tabs/${tabId}/`, updateData);
+      onUpdateRequired && onUpdateRequired(tabInfo);
     }
     catch (e) {
       console.log(e);
@@ -25,7 +26,16 @@ const TabNameTypeSelect = ({tabInfo, tabTypes}) => {
 
   function handleSave(e) {
     e.preventDefault();
-    console.log("Tab name: ", widgetName, "; selectedTypeId: ", selectedType?.id);
+
+    if (!canSave) {
+      return;
+    }
+
+    const updateData = {
+      "display_name": widgetName,
+      "tab_type_id": selectedType?.id,
+    }
+    saveTab(tabInfo?.id, updateData).catch();
   }
 
   useEffect(() => {
@@ -34,7 +44,7 @@ const TabNameTypeSelect = ({tabInfo, tabTypes}) => {
 
   return (
     <Box
-      style={{height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}
+      style={{display: "flex", flexDirection: "column"}}
       component="form"
       onSubmit={handleSave}
     >

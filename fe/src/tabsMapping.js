@@ -1,6 +1,7 @@
 export const TabTypesMapping = {
   event_log: {
-    initWidget: (tabInfo) => ({}),
-    widget: (tabInfo) => ({}),
+    widget: ({tabInfo}) => {
+      return (<>Event log widget</>);
+    },
   }
 }

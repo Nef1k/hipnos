@@ -1,6 +1,6 @@
 const TabDefaultInitializer = ({tabInfo}) => {
   return (
-    <>TabDefaultInitializer for {tabInfo}</>
+    <>TabDefaultInitializer for {tabInfo?.id}</>
   );
 }
 
