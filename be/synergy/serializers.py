@@ -17,7 +17,7 @@ class TabDetailsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=False, required=False)
     tab_type = TabTypeDetailsSerializer(many=False, read_only=True)
     tab_type_id = serializers.PrimaryKeyRelatedField(
-        required=True,
+        required=False,
         write_only=True,
         allow_null=False,
         source='tab_type',

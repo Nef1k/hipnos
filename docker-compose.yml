@@ -26,3 +26,13 @@ services:
       - "./data/nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf"
       - "./data/nginx/certs/:/etc/ssl/private"
     network_mode: host
+  rmq:
+    container_name: hipnos_rmq
+    hostname: hipnos_rmq  # This is important. Otherwise, rmq will recreate data folder and will be empty
+    restart: unless-stopped
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"    # RMQ itself
+      - "15672:15672"  # Web console
+    volumes:
+      - ./data/rmq/data/:/var/lib/rabbitmq/

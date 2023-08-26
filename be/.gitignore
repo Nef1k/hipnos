@@ -5,4 +5,5 @@ game_data/storage/event_backups/**
 !game_data/storage/event_backups/.gitkeep
 
 game_data/storage/tmp/**
+game_data/storage/qr/qr.pdf
 !game_data/storage/tmp/.gitkeep
