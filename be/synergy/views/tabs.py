@@ -5,9 +5,9 @@ from synergy.models import SynergyTab
 from synergy.models import TabType
 
 
-class RemoveTabAPI(generics.RetrieveUpdateDestroyAPIView):
+class RemoveUpdateTabAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = SynergyTab.objects.all()
-    serializer_class = serializers.TabTypeDetailsSerializer
+    serializer_class = serializers.TabDetailsSerializer
 
 
 class TabTypesListAPI(generics.ListAPIView):

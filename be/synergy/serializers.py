@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from synergy.models import DefaultUserPage
 from synergy.models import SynergyPage
@@ -14,20 +15,26 @@ class TabTypeDetailsSerializer(serializers.ModelSerializer):
 
 
 class TabDetailsSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=False, required=False)
+    id = serializers.IntegerField(read_only=True, required=False)
     tab_type = TabTypeDetailsSerializer(many=False, read_only=True)
     tab_type_id = serializers.PrimaryKeyRelatedField(
         required=False,
         write_only=True,
-        allow_null=False,
+        allow_null=True,
         source='tab_type',
         queryset=TabType.objects.all(),
     )
 
+    def validate_widget_state(self, value):
+        if not isinstance(value, dict):
+            raise ValidationError('Widget state must be a dict')
+
+        return value
+
     class Meta:
         model = SynergyTab
         fields = ['id', 'display_name', 'widget_state', 'tab_type',
-                  'tab_type_id']
+                  'tab_type_id', 'is_initialized']
 
 
 class SynergyPageListSerializer(serializers.ModelSerializer):
