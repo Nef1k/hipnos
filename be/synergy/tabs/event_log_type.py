@@ -13,5 +13,5 @@ class EventLogTabType(BaseTabType):
             'ch3': 'Channel 3 Lol',
         },
         display_name='Канал',
-        required=True,
+        required=False,
     )

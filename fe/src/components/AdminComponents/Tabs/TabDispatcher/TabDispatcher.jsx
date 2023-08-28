@@ -8,9 +8,14 @@ const TabDispatcher = ({tabInfo, tabTypes, onUpdateRequired}) => {
   function getInitializer(tabInfo) {
     const customInitializer = TabTypesMapping[tabInfo?.tab_type?.name]?.initWidget;
     if (!customInitializer)
-      return <TabDefaultInitializer tabInfo={tabInfo} />
+      return <TabDefaultInitializer tabInfo={tabInfo} onUpdateRequired={onUpdateRequired} />
     else
       return customInitializer(tabInfo);
+  }
+
+  function buildWidget(tabInfo) {
+    const widget = TabTypesMapping[tabInfo?.tab_type?.name]?.widget({tabInfo});
+    return widget || <>Error while loading widget "{tabInfo?.tab_type?.name}"</>;
   }
 
   function getComponentForTab(tabInfo) {
@@ -21,7 +26,7 @@ const TabDispatcher = ({tabInfo, tabTypes, onUpdateRequired}) => {
     else if (!tabInfo?.is_initialized)
       resultComponent = getInitializer(tabInfo);
     else
-      resultComponent = TabTypesMapping[tabInfo?.tab_type?.name].widget({tabInfo});
+      resultComponent = buildWidget(tabInfo);
 
     return resultComponent
   }

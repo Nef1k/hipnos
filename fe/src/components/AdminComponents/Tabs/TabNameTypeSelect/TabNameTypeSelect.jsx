@@ -1,18 +1,18 @@
 import {Box, Button, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
-import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import DataDropdown from "../../../DataDropdown/DataDropdown";
+import useHipnos from "../../../../hooks/useHipnos";
 
 const TabNameTypeSelect = ({tabInfo, tabTypes, onUpdateRequired}) => {
   const [widgetName, setWidgetName] = useState(tabInfo?.display_name);
   const [selectedType, setSelectedType] = useState(null);
   const [canSave, setCanSave] = useState(checkCanSave());
 
-  const axiosPrivate = useAxiosPrivate();
+  const hipnos = useHipnos();
 
-  async function saveTab(tabId, updateData) {
+  async function updateTab(tabId, updateData) {
     try {
-      await axiosPrivate.patch(`synergy/tabs/${tabId}/`, updateData);
+      await hipnos.updateTab(tabId, updateData);
       onUpdateRequired && onUpdateRequired(tabInfo);
     }
     catch (e) {
@@ -35,7 +35,7 @@ const TabNameTypeSelect = ({tabInfo, tabTypes, onUpdateRequired}) => {
       "display_name": widgetName,
       "tab_type_id": selectedType?.id,
     }
-    saveTab(tabInfo?.id, updateData).catch();
+    updateTab(tabInfo?.id, updateData).catch();
   }
 
   useEffect(() => {
