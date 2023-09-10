@@ -1,7 +1,36 @@
+# TODO: split this into package modules like serializers.*
 from rest_framework import serializers
 
-from hipnos.models import HipnosProgram
+from hipnos.models import HipnosProgram, HipnosEvent, HEventType
 from hipnos.models import Memory
+
+
+class EventTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HEventType
+        fields = '__all__'
+
+
+class HipnosEventDetailSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    timestamp = serializers.DateTimeField(read_only=True)
+    event_type = serializers.StringRelatedField(many=False)
+    source = serializers.CharField(read_only=True)
+    previous_state = serializers.JSONField(read_only=True)
+    current_state = serializers.JSONField(read_only=True)
+    misc_data = serializers.JSONField(read_only=True)
+
+    class Meta:
+        model = HipnosEvent
+        fields = [
+            'id',
+            'timestamp',
+            'event_type',
+            'source',
+            'previous_state',
+            'current_state',
+            'misc_data',
+        ]
 
 
 class MemoryListSerializer(serializers.ModelSerializer):
