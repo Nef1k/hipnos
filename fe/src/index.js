@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
-import {NotificationsProvider} from "./context/NotificationsProvider";
 import {AuthProvider} from "./context/AuthProvider";
 
 import '@fontsource/roboto/300.css';
@@ -15,6 +14,7 @@ import {SnacksProvider} from "./context/SnacksProvider";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import 'dayjs/locale/ru';
+import {SNotificationsProvider} from "./context/SNotificationsProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,9 +23,9 @@ root.render(
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
       <SnacksProvider>
         <AuthProvider>
-          <NotificationsProvider>
+          <SNotificationsProvider>
             <App className="test"/>
-          </NotificationsProvider>
+          </SNotificationsProvider>
         </AuthProvider>
       </SnacksProvider>
     </LocalizationProvider>

@@ -17,6 +17,8 @@ const MainPage = () => {
   const [programItems, setProgramItems] = useState([]);
   const [activeProgramIdx, setActiveProgramIdx] = useState(0);
 
+  const {subscribe, unsubscribe} = useNotifications();
+
   const navigate = useNavigate();
 
   const onMemoryClick = (e, idx, memory) => {
@@ -87,8 +89,6 @@ const MainPage = () => {
         console.error(e);
       });
   }
-
-  const {subscribe, unsubscribe} = useNotifications();
 
   useEffect(() => {
     subscribe({

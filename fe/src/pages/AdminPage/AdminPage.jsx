@@ -13,6 +13,8 @@ const AdminPage = () => {
 
   const navigate = useNavigate();
 
+
+
   async function fetchPage(pageName) {
     try {
       const response = await axiosPrivate.get(`/synergy/pages/${pageName}/`);

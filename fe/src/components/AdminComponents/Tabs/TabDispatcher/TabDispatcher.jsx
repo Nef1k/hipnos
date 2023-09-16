@@ -32,7 +32,9 @@ const TabDispatcher = ({tabInfo, tabTypes, onUpdateRequired}) => {
   }
 
   return (
-    <Box style={{height: "100%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+    <Box
+      style={{height: "100%", display: "flex", alignItems: "center", justifyContent: "center"}}
+    >
       {getComponentForTab(tabInfo)}
     </Box>
   );
