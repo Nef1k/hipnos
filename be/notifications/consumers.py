@@ -53,11 +53,13 @@ class NotificationsConsumer(WebsocketConsumer):
                 self.channel_name
             )
 
+        channel_names = list(channels.values_list('name', flat=True))
         self.event_subsystem.emit_event(
             HEventType.SUBSCRIBER_CONNECTED,
             misc_data={
                 'user_id': user.id,
                 'username': user.username,
+                'channels': channel_names,
             }
         )
 
