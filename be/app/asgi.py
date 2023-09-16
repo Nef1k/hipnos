@@ -22,7 +22,7 @@ application = ProtocolTypeRouter({
             TokenMiddleware(
                 QueryStringMiddleware(
                     URLRouter(
-                        notifications.routing.webwebsocket_urlpatterns,
+                        notifications.routing.websocket_urlpatterns,
                     ),
                 ),
             ),

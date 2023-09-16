@@ -34,7 +34,7 @@ class NotificationSubsystem(BaseSubsystem):
 
     def get_channels_by_name(
             self,
-            channels: List[str]
+            channels: Iterable[str]
     ) -> QuerySet[NotificationChannel]:
         return NotificationChannel.objects.filter(name__in=channels)
 

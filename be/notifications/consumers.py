@@ -3,10 +3,12 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from dependency_injector.wiring import Provide
+from django.db.models import QuerySet
 
 from di.containers import Container
 from hipnos.models import HEventType
 from hipnos.services.events import EventSubsystem
+from notifications.models import NotificationChannel
 from notifications.services.notifications import NotificationSubsystem
 
 
@@ -31,10 +33,17 @@ class NotificationsConsumer(WebsocketConsumer):
 
         channels_str = self.scope['query_params'].get('channels', '')
         channels = channels_str.split(',')
-        channel_instances = self.notification_subsystem.get_channels_by_name(channels)
-        if len(channel_instances) != len(channels) or not channel_instances:
-            self.close(4004)
-            return
+        if '__all__' in channels:
+            if len(channels) != 1:
+                self.close(4000)
+                return
+
+            channel_instances = self.notification_subsystem.get_all_channels()
+        else:
+            channel_instances = self.notification_subsystem.get_channels_by_name(channels)
+            if len(channel_instances) != len(channels) or not channel_instances:
+                self.close(4004)
+                return
 
         self.scope['channels'] = channel_instances
 
@@ -62,20 +71,23 @@ class NotificationsConsumer(WebsocketConsumer):
         self.accept(subprotocol=subprotocol)
 
     def disconnect(self, code):
+        channels: QuerySet[NotificationChannel] = self.scope['channels']
+        channel_names = list(channels.values_list('name', flat=True))
         for channel in self.scope['channels']:
             async_to_sync(self.channel_layer.group_discard)(
                 channel.group_name,
                 self.channel_name
             )
 
-            user = self.scope['user']
-            self.event_subsystem.emit_event(
-                HEventType.SUBSCRIBER_DISCONNECTED,
-                misc_data={
-                    'user_id': user.id,
-                    'username': user.username,
-                }
-            )
+        user = self.scope['user']
+        self.event_subsystem.emit_event(
+            HEventType.SUBSCRIBER_DISCONNECTED,
+            misc_data={
+                'user_id': user.id,
+                'username': user.username,
+                'channels': channel_names,
+            }
+        )
 
     def notification(self, event):
         self.send(text_data=json.dumps({
