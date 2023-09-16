@@ -69,7 +69,6 @@ class TokenMiddleware:
         try:
             scope['user'] = await self.authenticator.authenticate(scope)
         except InvalidToken:
-            await send({"type": "websocket.close", "code": 403})
-            return None
+            scope['user'] = User.get_anonymous()
 
         return await self.app(scope, receive, send)

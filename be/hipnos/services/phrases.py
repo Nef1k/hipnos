@@ -2,13 +2,16 @@ from typing import List
 
 from django.db import transaction
 from django.utils.timezone import now
+from rest_framework.exceptions import NotFound
 
 from di.services.base import BaseSubsystem
+from di.services.exceptions import SubsystemError
 from game_data.services.gd_path import GDPathService
-from hipnos.models import HipnosPhrase
+from hipnos.models import HipnosPhrase, HEventType
 from hipnos.models import HipnosProgram
 from hipnos.models import PhraseAction
 from hipnos.services.actions import ActionSubsystem
+from hipnos.services.events import EventSubsystem
 from hipnos.services.initializers.phrases import PhraseInitializer
 
 
@@ -17,9 +20,11 @@ class PhraseSubsystem(BaseSubsystem):
             self,
             gd_service: GDPathService,
             action_subsystem: ActionSubsystem,
+            event_subsystem: EventSubsystem,
     ):
         self.gd_service = gd_service
         self.action_subsystem = action_subsystem
+        self.event_subsystem = event_subsystem
         self.initializer = PhraseInitializer(
             gd_service=gd_service,
             action_subsystem=action_subsystem,
@@ -69,7 +74,15 @@ class PhraseSubsystem(BaseSubsystem):
         return True
 
     def submit_phrase(self, phrase_str: str):
-        phrase = self.get_phrase(phrase_str)
+        self.event_subsystem.emit_event(
+            HEventType.PHRASE_SUBMITTED,
+            misc_data={'phrase': phrase_str}
+        )
+
+        try:
+            phrase = self.get_phrase(phrase_str)
+        except HipnosPhrase.DoesNotExist:
+            raise UnknownPhraseError(f'Phrase {phrase_str} is unknown')
 
         if not self.can_phrase_be_unlocked(phrase):
             return None
@@ -89,3 +102,11 @@ class PhraseSubsystem(BaseSubsystem):
             if phrase != core_phrase:
                 phrase.save()
             core_phrase.save()
+
+
+class PhraseError(SubsystemError):
+    pass
+
+
+class UnknownPhraseError(SubsystemError, NotFound):
+    pass

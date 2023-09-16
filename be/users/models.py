@@ -3,4 +3,12 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    @classmethod
+    def get_anonymous(cls):
+        return cls(
+            id=-999,
+            username='anonymous',
+            first_name='Jon',
+            last_name='Doe',
+            email='noreply@example.com'
+        )

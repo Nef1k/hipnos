@@ -1,5 +1,6 @@
 import json
 import os.path
+from typing import Iterable, Tuple, Dict
 
 from django.utils.timezone import now
 
@@ -26,6 +27,23 @@ class EventInitializer(BaseInitializer):
 
     def initialize(self):
         event_types = get_constants_from_class(HEventType, tuple)
+        self.save_event_types(event_types)  # noqa
+
+    def prune(self):
+        self._backup_events()
+        self.subsystem.prune_models([HipnosEvent, HEventType, EventNotification])
+
+    def update_event_types(self):
+        db_types = set(HEventType.objects.values_list('id', flat=True))
+        existing_types = {
+            event_name: (event_id, channels)
+            for event_name, (event_id, channels)
+            in get_constants_from_class(HEventType, tuple).items()
+            if event_id not in db_types
+        }
+        self.save_event_types(existing_types)
+
+    def save_event_types(self, event_types: Dict[str, Tuple[int, Iterable]]) -> None:
         HEventType.objects.bulk_create(HEventType(
             id=event_id,
             name=event_name,
@@ -42,10 +60,6 @@ class EventInitializer(BaseInitializer):
                     order_key=order_key,
                 ))
         EventNotification.objects.bulk_create(event_notifications)
-
-    def prune(self):
-        self._backup_events()
-        self.subsystem.prune_models([HipnosEvent, HEventType, EventNotification])
 
     def _backup_events(self):
         event_types = HEventType.objects.all()

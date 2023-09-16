@@ -107,6 +107,7 @@ class Container(containers.DeclarativeContainer):
         PhraseSubsystem,
         gd_path_service,
         actions_subsystem,
+        event_subsystem=event_subsystem,
     )
 
     program_subsystem: ProgramSubsystem = providers.Factory(

@@ -5,5 +5,5 @@ from hipnos.serializers import HipnosEventDetailSerializer
 
 
 class EventsListView(generics.ListAPIView):
-    queryset = HipnosEvent.objects.all()
+    queryset = HipnosEvent.objects.order_by('timestamp')
     serializer_class = HipnosEventDetailSerializer

@@ -121,6 +121,7 @@ class HEventType(models.Model):
     PROGRAM_SET_STATE = 4, (NotificationChannel.PROGRAMS,)
     SUBSCRIBER_CONNECTED = 5, (NotificationChannel.NOTIFICATIONS,)
     SUBSCRIBER_DISCONNECTED = 6, (NotificationChannel.NOTIFICATIONS,)
+    PHRASE_SUBMITTED = 7, (NotificationChannel.PHRASES,)
     TEST_EVENT = 1000, (NotificationChannel.MEMORIES,
                         NotificationChannel.ACTIONS,
                         NotificationChannel.PHRASES)
