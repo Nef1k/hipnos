@@ -13,6 +13,11 @@
   src: url("../public/fonts/SpeedyRegular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "HIcons";
+  src: url("../public/fonts/HIcons.ttf") format("truetype");
+}
+
 body {
   margin: 0;
   font-family: "Pangolin", apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

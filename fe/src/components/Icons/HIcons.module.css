@@ -1,0 +1,8 @@
+.baseIcon {
+    font-family: "HIcons", sans-serif;
+}
+
+
+.hPenisIcon:before {
+    content: '\e900';
+}

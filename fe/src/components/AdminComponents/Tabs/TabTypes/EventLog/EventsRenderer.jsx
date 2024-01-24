@@ -1,3 +1,4 @@
+import './EventsTypography.css';
 import dayjs from "dayjs";
 import {EventsMapping} from "./eventsMapping";
 
